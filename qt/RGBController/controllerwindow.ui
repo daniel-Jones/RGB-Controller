@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>controllerWindow</class>
  <widget class="QMainWindow" name="controllerWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -196,7 +199,14 @@
      </widget>
     </item>
     <item row="10" column="0">
-     <widget class="QComboBox" name="presets_dropdown"/>
+     <widget class="QComboBox" name="presets_dropdown">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
     </item>
     <item row="13" column="0" colspan="2">
      <widget class="QTextEdit" name="info_log_textarea"/>

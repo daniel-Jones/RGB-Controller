@@ -56,6 +56,7 @@ public:
     {
         if (controllerWindow->objectName().isEmpty())
             controllerWindow->setObjectName(QStringLiteral("controllerWindow"));
+        controllerWindow->setWindowModality(Qt::WindowModal);
         controllerWindow->resize(229, 394);
         centralWidget = new QWidget(controllerWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
@@ -173,6 +174,7 @@ public:
 
         presets_dropdown = new QComboBox(centralWidget);
         presets_dropdown->setObjectName(QStringLiteral("presets_dropdown"));
+        presets_dropdown->setMinimumSize(QSize(120, 0));
 
         formLayout->setWidget(10, QFormLayout::LabelRole, presets_dropdown);
 
