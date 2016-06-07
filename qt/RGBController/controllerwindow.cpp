@@ -16,6 +16,8 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	ui->off_button->setEnabled(false);
 	ui->reload_preset_button->setEnabled(false);
 	ui->set_preset_button->setEnabled(false);
+    ui->preset_save_button->setEnabled(false);
+    ui->preset_name_textbox->setEnabled(false);
 	ui->presets_dropdown->setEnabled(false);
 	ui->r_slider->setEnabled(false);
 	ui->g_slider->setEnabled(false);
@@ -99,7 +101,28 @@ void controllerWindow::load_presets()
 	{
 		show_msgbox("Unable to find the presets fle.\nThis file needs to be named 'presets.txt' and be located in the same directory as the binary.");
 		info_log("Presets file not found.");
-	}
+    }
+}
+
+void controllerWindow::save_preset(QString name)
+{
+    /* this function will save our preset to file */
+    QFile file("presets.txt");
+    if(!file.open(QIODevice::Append)) {
+        show_msgbox("Fatal error opening presets for appending text.");
+
+    } else
+    {
+        QTextStream stream(&file);
+        stream << name << "=" << ui->r_slider->value() << "," << ui->g_slider->value() << "," << ui->b_slider->value() << endl;
+        file.close();
+        info_log("Saved preset: " + name);
+        /* things to fix the presets list */
+        ui->presets_dropdown->clear();
+        presets.clear();
+        preset_index = 0;
+        load_presets();
+    }
 }
 
 void controllerWindow::serial_rgb_change(int r, int g, int b)
@@ -141,6 +164,8 @@ void controllerWindow::on_connect_button_clicked()
 		ui->off_button->setEnabled(true);
 		ui->reload_preset_button->setEnabled(true);
 		ui->set_preset_button->setEnabled(true);
+        ui->preset_save_button->setEnabled(true);
+        ui->preset_name_textbox->setEnabled(true);
 		ui->presets_dropdown->setEnabled(true);
 		ui->r_slider->setEnabled(true);
 		ui->g_slider->setEnabled(true);
@@ -171,6 +196,8 @@ void controllerWindow::on_disconnect_button_clicked()
 		ui->blue_button->setEnabled(false);
 		ui->off_button->setEnabled(false);
 		ui->reload_preset_button->setEnabled(false);
+        ui->preset_save_button->setEnabled(false);
+        ui->preset_name_textbox->setEnabled(false);
 		ui->set_preset_button->setEnabled(false);
 		ui->presets_dropdown->setEnabled(false);
 		ui->refresh_port_button->setEnabled(true);
@@ -257,10 +284,26 @@ void controllerWindow::on_set_preset_button_clicked()
 		ui->r_slider->setValue(temparray[0].toInt());
 		ui->g_slider->setValue(temparray[1].toInt());
 		ui->b_slider->setValue(temparray[2].toInt());
-	}
+    } else
+        show_msgbox("There are no loaded presets!");
 }
 
 void controllerWindow::on_presets_dropdown_currentIndexChanged(int index)
 {
 	preset_index = index;
+}
+
+void controllerWindow::on_preset_save_button_clicked()
+{
+    QString tempname = ui->preset_name_textbox->text();
+    if (tempname.contains("="))
+    {
+        show_msgbox("Cannot save a preset with a name that contains an '='.");
+    } else if (tempname.isEmpty())
+    {
+        show_msgbox("Cannot save a preset without a name.");
+    } else
+    {
+        save_preset(tempname);
+    }
 }

@@ -28,6 +28,7 @@ class controllerWindow : public QMainWindow
 		void info_log(QString text);
 		void populate_serial_list();
 		void load_presets();
+        void save_preset(QString name);
 		void serial_rgb_change(int r, int g, int b);
 		void show_msgbox(QString message);
 		/*public variables */
@@ -68,7 +69,9 @@ class controllerWindow : public QMainWindow
 
 		void on_presets_dropdown_currentIndexChanged(int index);
 
-	private:
+        void on_preset_save_button_clicked();
+
+private:
 		Ui::controllerWindow *ui;
 		/* serial communication object */
 		serial_communication portf;
