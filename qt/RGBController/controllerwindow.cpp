@@ -82,7 +82,11 @@ void controllerWindow::load_presets()
 	 * -> split line at delimeter
 	 * -> add [0] to dropdown (name), add [1] to an array that stores all the values
 	 */
-	QFile inputFile("presets.txt");
+
+    /* PLEASE READ ME
+     * This is a hard coded directory for i3wm's sake, you have to fix this yourself.
+     */
+    QFile inputFile("/home/daniel_j/documents/school/2016\ research\ project/RGBController/qt/build/degub/presets.txt");
 	if (inputFile.open(QIODevice::ReadOnly))
 	{
 		QTextStream in(&inputFile);
@@ -99,7 +103,7 @@ void controllerWindow::load_presets()
 		info_log("Presets loaded");
 	} else
 	{
-		show_msgbox("Unable to find the presets fle.\nThis file needs to be named 'presets.txt' and be located in the same directory as the binary.");
+        show_msgbox("Unable to find the presets file.\nThis file needs to be named 'presets.txt' and be located in the same directory as the binary.");
 		info_log("Presets file not found.");
     }
 }
@@ -306,4 +310,5 @@ void controllerWindow::on_preset_save_button_clicked()
     {
         save_preset(tempname);
     }
+    ui->preset_name_textbox->clear();
 }
