@@ -16,8 +16,9 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	ui->off_button->setEnabled(false);
 	ui->reload_preset_button->setEnabled(false);
 	ui->set_preset_button->setEnabled(false);
-    ui->preset_save_button->setEnabled(false);
-    ui->preset_name_textbox->setEnabled(false);
+	ui->preset_save_button->setEnabled(false);
+    ui->preset_delete_button->setEnabled(false);
+	ui->preset_name_textbox->setEnabled(false);
 	ui->presets_dropdown->setEnabled(false);
 	ui->r_slider->setEnabled(false);
 	ui->g_slider->setEnabled(false);
@@ -83,10 +84,8 @@ void controllerWindow::load_presets()
 	 * -> add [0] to dropdown (name), add [1] to an array that stores all the values
 	 */
 
-    /* PLEASE READ ME
-     * This is a hard coded directory for i3wm's sake, you have to fix this yourself.
-     */
-    QFile inputFile("/home/daniel_j/documents/school/2016\ research\ project/RGBController/qt/build/degub/presets.txt");
+
+    QFile inputFile("presets.txt");
 	if (inputFile.open(QIODevice::ReadOnly))
 	{
 		QTextStream in(&inputFile);
@@ -105,28 +104,72 @@ void controllerWindow::load_presets()
 	{
         show_msgbox("Unable to find the presets file.\nThis file needs to be named 'presets.txt' and be located in the same directory as the binary.");
 		info_log("Presets file not found.");
-    }
+	}
 }
 
 void controllerWindow::save_preset(QString name)
 {
-    /* this function will save our preset to file */
-    QFile file("presets.txt");
+	/* this function will save our preset to file */
+	QFile file("presets.txt");
+	if(!file.open(QIODevice::Append)) {
+		show_msgbox("Fatal error opening presets for appending text.");
+
+	} else
+	{
+		QTextStream stream(&file);
+		stream << name << "=" << ui->r_slider->value() << "," << ui->g_slider->value() << "," << ui->b_slider->value() << endl;
+		file.close();
+		info_log("Saved preset: " + name);
+		/* things to fix the presets list */
+		ui->presets_dropdown->clear();
+		presets.clear();
+		preset_index = 0;
+		load_presets();
+    }
+}
+
+void controllerWindow::delete_preset(QString name)
+{
+    /*
+     * here we will delete a preset from the presets file
+     * process:
+     * retrieve preset name
+     * go through preset file line by line and write it to a seperate tmp file
+     * if the [0] of split('=') equals the preset name, don't write it to the tmp file
+     * delete the old preset file
+     * rename the tmp file to presets.txt
+     */
+    info_log("deleting preset: " + name);
+    QFile file("tmp.file");
     if(!file.open(QIODevice::Append)) {
-        show_msgbox("Fatal error opening presets for appending text.");
+        show_msgbox("Fatal error opening temp file for writing");
 
     } else
     {
         QTextStream stream(&file);
-        stream << name << "=" << ui->r_slider->value() << "," << ui->g_slider->value() << "," << ui->b_slider->value() << endl;
+        //stream << "test tmp file" << endl;
+        for (int x = 0; x < ui->presets_dropdown->count(); x++)
+        {
+            if(name != ui->presets_dropdown->itemText(x))
+            {
+                info_log("adding: " + ui->presets_dropdown->itemText(x) + "=" + presets.at(x));
+                stream << ui->presets_dropdown->itemText(x) << "=" << presets.at(x) << endl;
+            } else
+            {
+                info_log("not adding: " + ui->presets_dropdown->itemText(x) + "=" + presets.at(x));
+            }
+        }
         file.close();
-        info_log("Saved preset: " + name);
-        /* things to fix the presets list */
+        /* remove the current presets file then rename the temp file to presets.txt */
+        QFile::remove("presets.txt");
+        QFile::rename("tmp.file", "presets.txt");
+        /* reload presets into memory and clear the drop down box */
         ui->presets_dropdown->clear();
         presets.clear();
         preset_index = 0;
         load_presets();
     }
+
 }
 
 void controllerWindow::serial_rgb_change(int r, int g, int b)
@@ -136,6 +179,7 @@ void controllerWindow::serial_rgb_change(int r, int g, int b)
 
 void controllerWindow::show_msgbox(QString message)
 {
+    /* show message box to the user */
 	QMessageBox msgbox;
 	msgbox.setText(message);
 	msgbox.exec();
@@ -168,8 +212,9 @@ void controllerWindow::on_connect_button_clicked()
 		ui->off_button->setEnabled(true);
 		ui->reload_preset_button->setEnabled(true);
 		ui->set_preset_button->setEnabled(true);
-        ui->preset_save_button->setEnabled(true);
-        ui->preset_name_textbox->setEnabled(true);
+		ui->preset_save_button->setEnabled(true);
+        ui->preset_delete_button->setEnabled(true);
+		ui->preset_name_textbox->setEnabled(true);
 		ui->presets_dropdown->setEnabled(true);
 		ui->r_slider->setEnabled(true);
 		ui->g_slider->setEnabled(true);
@@ -200,8 +245,9 @@ void controllerWindow::on_disconnect_button_clicked()
 		ui->blue_button->setEnabled(false);
 		ui->off_button->setEnabled(false);
 		ui->reload_preset_button->setEnabled(false);
-        ui->preset_save_button->setEnabled(false);
-        ui->preset_name_textbox->setEnabled(false);
+		ui->preset_save_button->setEnabled(false);
+        ui->preset_delete_button->setEnabled(false);
+		ui->preset_name_textbox->setEnabled(false);
 		ui->set_preset_button->setEnabled(false);
 		ui->presets_dropdown->setEnabled(false);
 		ui->refresh_port_button->setEnabled(true);
@@ -288,8 +334,8 @@ void controllerWindow::on_set_preset_button_clicked()
 		ui->r_slider->setValue(temparray[0].toInt());
 		ui->g_slider->setValue(temparray[1].toInt());
 		ui->b_slider->setValue(temparray[2].toInt());
-    } else
-        show_msgbox("There are no loaded presets!");
+	} else
+		show_msgbox("There are no loaded presets!");
 }
 
 void controllerWindow::on_presets_dropdown_currentIndexChanged(int index)
@@ -299,16 +345,21 @@ void controllerWindow::on_presets_dropdown_currentIndexChanged(int index)
 
 void controllerWindow::on_preset_save_button_clicked()
 {
-    QString tempname = ui->preset_name_textbox->text();
-    if (tempname.contains("="))
-    {
-        show_msgbox("Cannot save a preset with a name that contains an '='.");
-    } else if (tempname.isEmpty())
-    {
-        show_msgbox("Cannot save a preset without a name.");
-    } else
-    {
-        save_preset(tempname);
-    }
-    ui->preset_name_textbox->clear();
+	QString tempname = ui->preset_name_textbox->text();
+	if (tempname.contains("="))
+	{
+		show_msgbox("Cannot save a preset with a name that contains an '='.");
+	} else if (tempname.isEmpty())
+	{
+		show_msgbox("Cannot save a preset without a name.");
+	} else
+	{
+		save_preset(tempname);
+	}
+	ui->preset_name_textbox->clear();
+}
+
+void controllerWindow::on_preset_delete_button_clicked()
+{
+    delete_preset(ui->presets_dropdown->currentText());
 }

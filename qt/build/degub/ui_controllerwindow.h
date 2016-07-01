@@ -52,15 +52,16 @@ public:
     QComboBox *presets_dropdown;
     QTextEdit *info_log_textarea;
     QLineEdit *preset_name_textbox;
-    QPushButton *reload_preset_button;
     QPushButton *preset_save_button;
+    QPushButton *preset_delete_button;
+    QPushButton *reload_preset_button;
 
     void setupUi(QMainWindow *controllerWindow)
     {
         if (controllerWindow->objectName().isEmpty())
             controllerWindow->setObjectName(QStringLiteral("controllerWindow"));
         controllerWindow->setWindowModality(Qt::WindowModal);
-        controllerWindow->resize(235, 402);
+        controllerWindow->resize(235, 428);
         centralWidget = new QWidget(controllerWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         formLayout = new QFormLayout(centralWidget);
@@ -163,7 +164,7 @@ public:
         info_log_label = new QLabel(centralWidget);
         info_log_label->setObjectName(QStringLiteral("info_log_label"));
 
-        formLayout->setWidget(12, QFormLayout::LabelRole, info_log_label);
+        formLayout->setWidget(14, QFormLayout::LabelRole, info_log_label);
 
         set_preset_button = new QPushButton(centralWidget);
         set_preset_button->setObjectName(QStringLiteral("set_preset_button"));
@@ -179,22 +180,27 @@ public:
         info_log_textarea = new QTextEdit(centralWidget);
         info_log_textarea->setObjectName(QStringLiteral("info_log_textarea"));
 
-        formLayout->setWidget(13, QFormLayout::SpanningRole, info_log_textarea);
+        formLayout->setWidget(15, QFormLayout::SpanningRole, info_log_textarea);
 
         preset_name_textbox = new QLineEdit(centralWidget);
         preset_name_textbox->setObjectName(QStringLiteral("preset_name_textbox"));
 
-        formLayout->setWidget(11, QFormLayout::LabelRole, preset_name_textbox);
-
-        reload_preset_button = new QPushButton(centralWidget);
-        reload_preset_button->setObjectName(QStringLiteral("reload_preset_button"));
-
-        formLayout->setWidget(12, QFormLayout::FieldRole, reload_preset_button);
+        formLayout->setWidget(12, QFormLayout::LabelRole, preset_name_textbox);
 
         preset_save_button = new QPushButton(centralWidget);
         preset_save_button->setObjectName(QStringLiteral("preset_save_button"));
 
-        formLayout->setWidget(11, QFormLayout::FieldRole, preset_save_button);
+        formLayout->setWidget(12, QFormLayout::FieldRole, preset_save_button);
+
+        preset_delete_button = new QPushButton(centralWidget);
+        preset_delete_button->setObjectName(QStringLiteral("preset_delete_button"));
+
+        formLayout->setWidget(13, QFormLayout::FieldRole, preset_delete_button);
+
+        reload_preset_button = new QPushButton(centralWidget);
+        reload_preset_button->setObjectName(QStringLiteral("reload_preset_button"));
+
+        formLayout->setWidget(11, QFormLayout::LabelRole, reload_preset_button);
 
         controllerWindow->setCentralWidget(centralWidget);
 
@@ -220,8 +226,9 @@ public:
         off_button->setText(QApplication::translate("controllerWindow", "Off", 0));
         info_log_label->setText(QApplication::translate("controllerWindow", "Information log", 0));
         set_preset_button->setText(QApplication::translate("controllerWindow", "Set", 0));
-        reload_preset_button->setText(QApplication::translate("controllerWindow", "Reload", 0));
         preset_save_button->setText(QApplication::translate("controllerWindow", "Save", 0));
+        preset_delete_button->setText(QApplication::translate("controllerWindow", "Delete", 0));
+        reload_preset_button->setText(QApplication::translate("controllerWindow", "Reload", 0));
     } // retranslateUi
 
 };
