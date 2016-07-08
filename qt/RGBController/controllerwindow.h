@@ -32,6 +32,7 @@ class controllerWindow : public QMainWindow
         void delete_preset(QString name);
 		void serial_rgb_change(int r, int g, int b);
 		void show_msgbox(QString message);
+        int show_question_box(QString message, QString omessage);
 		/*public variables */
 		/* these three ints will hold the current value (0 - 255) of each slider */
 		int r, g, b;

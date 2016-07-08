@@ -17,7 +17,7 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	ui->reload_preset_button->setEnabled(false);
 	ui->set_preset_button->setEnabled(false);
 	ui->preset_save_button->setEnabled(false);
-    ui->preset_delete_button->setEnabled(false);
+	ui->preset_delete_button->setEnabled(false);
 	ui->preset_name_textbox->setEnabled(false);
 	ui->presets_dropdown->setEnabled(false);
 	ui->r_slider->setEnabled(false);
@@ -85,7 +85,7 @@ void controllerWindow::load_presets()
 	 */
 
 
-    QFile inputFile("presets.txt");
+	QFile inputFile("presets.txt");
 	if (inputFile.open(QIODevice::ReadOnly))
 	{
 		QTextStream in(&inputFile);
@@ -102,7 +102,7 @@ void controllerWindow::load_presets()
 		info_log("Presets loaded");
 	} else
 	{
-        show_msgbox("Unable to find the presets file.\nThis file needs to be named 'presets.txt' and be located in the same directory as the binary.");
+		show_msgbox("Unable to find the presets file.\nThis file needs to be named 'presets.txt' and be located in the same directory as the binary.");
 		info_log("Presets file not found.");
 	}
 }
@@ -125,50 +125,60 @@ void controllerWindow::save_preset(QString name)
 		presets.clear();
 		preset_index = 0;
 		load_presets();
-    }
+	}
 }
 
 void controllerWindow::delete_preset(QString name)
 {
-    /*
-     * here we will delete a preset from the presets file
-     * process:
-     * retrieve preset name
-     * go through preset file line by line and write it to a seperate tmp file
-     * if the [0] of split('=') equals the preset name, don't write it to the tmp file
-     * delete the old preset file
-     * rename the tmp file to presets.txt
-     */
-    info_log("deleting preset: " + name);
-    QFile file("tmp.file");
-    if(!file.open(QIODevice::Append)) {
-        show_msgbox("Fatal error opening temp file for writing");
-
-    } else
-    {
-        QTextStream stream(&file);
-        //stream << "test tmp file" << endl;
-        for (int x = 0; x < ui->presets_dropdown->count(); x++)
+	/*
+	 * here we will delete a preset from the presets file
+	 * process:
+	 * retrieve preset name
+	 * go through preset file line by line and write it to a seperate tmp file
+	 * if the [0] of split('=') equals the preset name, don't write it to the tmp file
+	 * delete the old preset file
+	 * rename the tmp file to presets.txt
+	 */
+    int ret = show_question_box("Are you want to delete this preset?", "This process cannot be reverted.");
+    switch (ret) {
+        case QMessageBox::Ok:
         {
-            if(name != ui->presets_dropdown->itemText(x))
-            {
-                info_log("adding: " + ui->presets_dropdown->itemText(x) + "=" + presets.at(x));
-                stream << ui->presets_dropdown->itemText(x) << "=" << presets.at(x) << endl;
+            info_log("deleting preset: " + name);
+            QFile file("tmp.file");
+            if(!file.open(QIODevice::Append)) {
+                show_msgbox("Fatal error opening temp file for writing");
+
             } else
             {
-                info_log("not adding: " + ui->presets_dropdown->itemText(x) + "=" + presets.at(x));
+                QTextStream stream(&file);
+                //stream << "test tmp file" << endl;
+                for (int x = 0; x < ui->presets_dropdown->count(); x++)
+                {
+                    if(name != ui->presets_dropdown->itemText(x))
+                    {
+                        stream << ui->presets_dropdown->itemText(x) << "=" << presets.at(x) << endl;
+                    }
+                }
+                file.close();
+                /* remove the current presets file then rename the temp file to presets.txt */
+                QFile::remove("presets.txt");
+                QFile::rename("tmp.file", "presets.txt");
+                /* reload presets into memory and clear the drop down box */
+                ui->presets_dropdown->clear();
+                presets.clear();
+                preset_index = 0;
+                load_presets();
+                break;
+         }
             }
-        }
-        file.close();
-        /* remove the current presets file then rename the temp file to presets.txt */
-        QFile::remove("presets.txt");
-        QFile::rename("tmp.file", "presets.txt");
-        /* reload presets into memory and clear the drop down box */
-        ui->presets_dropdown->clear();
-        presets.clear();
-        preset_index = 0;
-        load_presets();
+        case QMessageBox::Cancel:
+            show_msgbox("Preset was not deleted.");
+            break;
+        default:
+            info_log("Unknown response received.");
+            break;
     }
+
 
 }
 
@@ -179,10 +189,20 @@ void controllerWindow::serial_rgb_change(int r, int g, int b)
 
 void controllerWindow::show_msgbox(QString message)
 {
-    /* show message box to the user */
+	/* show message box to the user */
 	QMessageBox msgbox;
 	msgbox.setText(message);
-	msgbox.exec();
+    msgbox.exec();
+}
+
+int controllerWindow::show_question_box(QString message, QString omessage)
+{
+    QMessageBox qbox;
+    qbox.setText(message);
+    qbox.setInformativeText(omessage);
+    qbox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    qbox.setDefaultButton(QMessageBox::Cancel);
+    return qbox.exec();
 }
 
 /*
@@ -213,7 +233,7 @@ void controllerWindow::on_connect_button_clicked()
 		ui->reload_preset_button->setEnabled(true);
 		ui->set_preset_button->setEnabled(true);
 		ui->preset_save_button->setEnabled(true);
-        ui->preset_delete_button->setEnabled(true);
+		ui->preset_delete_button->setEnabled(true);
 		ui->preset_name_textbox->setEnabled(true);
 		ui->presets_dropdown->setEnabled(true);
 		ui->r_slider->setEnabled(true);
@@ -246,7 +266,7 @@ void controllerWindow::on_disconnect_button_clicked()
 		ui->off_button->setEnabled(false);
 		ui->reload_preset_button->setEnabled(false);
 		ui->preset_save_button->setEnabled(false);
-        ui->preset_delete_button->setEnabled(false);
+		ui->preset_delete_button->setEnabled(false);
 		ui->preset_name_textbox->setEnabled(false);
 		ui->set_preset_button->setEnabled(false);
 		ui->presets_dropdown->setEnabled(false);
@@ -361,5 +381,5 @@ void controllerWindow::on_preset_save_button_clicked()
 
 void controllerWindow::on_preset_delete_button_clicked()
 {
-    delete_preset(ui->presets_dropdown->currentText());
+	delete_preset(ui->presets_dropdown->currentText());
 }
