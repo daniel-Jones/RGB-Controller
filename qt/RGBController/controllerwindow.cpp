@@ -84,7 +84,6 @@ void controllerWindow::load_presets()
 	 * -> add [0] to dropdown (name), add [1] to an array that stores all the values
 	 */
 
-
 	QFile inputFile("presets.txt");
 	if (inputFile.open(QIODevice::ReadOnly))
 	{
@@ -139,45 +138,46 @@ void controllerWindow::delete_preset(QString name)
 	 * delete the old preset file
 	 * rename the tmp file to presets.txt
 	 */
-    int ret = show_question_box("Are you want to delete this preset?", "This process cannot be reverted.");
-    switch (ret) {
-        case QMessageBox::Ok:
-        {
-            info_log("deleting preset: " + name);
-            QFile file("tmp.file");
-            if(!file.open(QIODevice::Append)) {
-                show_msgbox("Fatal error opening temp file for writing");
+	int ret = show_question_box("Are you sure want to delete this preset?", "This process cannot be reverted.");
+	switch (ret) 
+	{
+		case QMessageBox::Ok:
+			{
+				info_log("deleting preset: " + name);
+				QFile file("tmp.file");
+				if(!file.open(QIODevice::Append)) {
+					show_msgbox("Fatal error opening temp file for writing");
 
-            } else
-            {
-                QTextStream stream(&file);
-                //stream << "test tmp file" << endl;
-                for (int x = 0; x < ui->presets_dropdown->count(); x++)
-                {
-                    if(name != ui->presets_dropdown->itemText(x))
-                    {
-                        stream << ui->presets_dropdown->itemText(x) << "=" << presets.at(x) << endl;
-                    }
-                }
-                file.close();
-                /* remove the current presets file then rename the temp file to presets.txt */
-                QFile::remove("presets.txt");
-                QFile::rename("tmp.file", "presets.txt");
-                /* reload presets into memory and clear the drop down box */
-                ui->presets_dropdown->clear();
-                presets.clear();
-                preset_index = 0;
-                load_presets();
-                break;
-         }
-            }
-        case QMessageBox::Cancel:
-            show_msgbox("Preset was not deleted.");
-            break;
-        default:
-            info_log("Unknown response received.");
-            break;
-    }
+				} else
+				{
+					QTextStream stream(&file);
+					//stream << "test tmp file" << endl;
+					for (int x = 0; x < ui->presets_dropdown->count(); x++)
+					{
+						if(name != ui->presets_dropdown->itemText(x))
+						{
+							stream << ui->presets_dropdown->itemText(x) << "=" << presets.at(x) << endl;
+						}
+					}
+					file.close();
+					/* remove the current presets file then rename the temp file to presets.txt */
+					QFile::remove("presets.txt");
+					QFile::rename("tmp.file", "presets.txt");
+					/* reload presets into memory and clear the drop down box */
+					ui->presets_dropdown->clear();
+					presets.clear();
+					preset_index = 0;
+					load_presets();
+					break;
+				}
+			}
+		case QMessageBox::Cancel:
+			show_msgbox("Preset was not deleted.");
+			break;
+		default:
+			info_log("Unknown response received.");
+			break;
+	}
 
 
 }
@@ -192,17 +192,17 @@ void controllerWindow::show_msgbox(QString message)
 	/* show message box to the user */
 	QMessageBox msgbox;
 	msgbox.setText(message);
-    msgbox.exec();
+	msgbox.exec();
 }
 
 int controllerWindow::show_question_box(QString message, QString omessage)
 {
-    QMessageBox qbox;
-    qbox.setText(message);
-    qbox.setInformativeText(omessage);
-    qbox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    qbox.setDefaultButton(QMessageBox::Cancel);
-    return qbox.exec();
+	QMessageBox qbox;
+	qbox.setText(message);
+	qbox.setInformativeText(omessage);
+	qbox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	qbox.setDefaultButton(QMessageBox::Cancel);
+	return qbox.exec();
 }
 
 /*
@@ -350,7 +350,7 @@ void controllerWindow::on_set_preset_button_clicked()
 	{
 		QString tempstore = presets.at(preset_index);
 		QStringList temparray = tempstore.split(",");
-		info_log("Preset selected: " + temparray[0] + " " + temparray[1] + " " + temparray[2]);
+		//info_log("Preset selected: " + temparray[0] + " " + temparray[1] + " " + temparray[2]);
 		ui->r_slider->setValue(temparray[0].toInt());
 		ui->g_slider->setValue(temparray[1].toInt());
 		ui->b_slider->setValue(temparray[2].toInt());

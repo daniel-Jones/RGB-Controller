@@ -324,7 +324,7 @@
      <widget class="QTextEdit" name="info_log_textarea"/>
     </item>
     <item row="15" column="0">
-     <widget class="QSlider" name="horizontalSlider">
+     <widget class="QSlider" name="speed_slider">
       <property name="minimum">
        <number>10</number>
       </property>
@@ -337,7 +337,7 @@
      </widget>
     </item>
     <item row="15" column="1">
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="speed_button">
       <property name="text">
        <string>Speed</string>
       </property>

@@ -1,0 +1,103 @@
+#include <SPI.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+const int PRED = 2;
+const int PGREEN = 4;
+const int PBLUE = 3;
+
+#define OLED_RESET 4
+
+#define WIDTH 128
+#define HEIGHT 64
+
+Adafruit_SSD1306 display(OLED_RESET);
+
+/* storage */
+int red;
+int green;
+int blue;
+
+class menuitem
+{
+	public:
+		String name;
+		String desc;
+};
+
+menuitem items[6];
+
+void setup()
+{
+	Serial.begin(9600);
+	pinMode(PRED, OUTPUT);
+	pinMode(PGREEN, OUTPUT);
+	pinMode(PBLUE, OUTPUT);
+
+	/* set all values to 0 */
+	red = 0;
+	green = 0;
+	blue = 0;
+//	setupmenu();
+	//display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+	display.clearDisplay();
+}
+
+void loop()
+{
+	rgb();
+	display.clearDisplay();
+	//menu();
+	oledwrite(0,0,3,"testtt");
+	display.display();
+
+}
+
+void setupmenu()
+{
+	for (int x = 0; x < sizeof(items); x++)
+	{
+		items[x] = menuitem();
+	}
+	items[0].name = "test 1";
+	items[0].desc = "first test";
+}
+
+void menu()
+{
+	oledwrite(0, 0, 2, items[0].name);
+	oledwrite(60, 0, 2, items[0].desc);
+}
+
+void oledwrite(int x, int y, int size, String text)
+{ 
+	display.setTextSize(size);
+	display.setTextColor(WHITE);
+	display.setCursor(x, y); 
+	display.println(text);
+}
+
+void oledpixel(int x, int y)
+{
+	display.drawPixel(x, y, 1);
+}
+
+void oledline(int x1, int y1, int x2, int y2)
+{
+	display.drawLine(x1, y1, x2, y2, WHITE);
+}
+
+void rgb()
+{
+	/* read serial data */
+	while (Serial.available() > 1)
+	{
+		red = Serial.parseInt();
+		green = Serial.parseInt();
+		blue = Serial.parseInt();
+		analogWrite(PRED, red);
+		analogWrite(PGREEN, green);
+		analogWrite(PBLUE, blue);
+	}
+
+}

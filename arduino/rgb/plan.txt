@@ -1,0 +1,14 @@
+
+
+loop {
+
+	special function thread 
+	serial handle
+
+}
+
+special function thread {
+
+	
+
+}
