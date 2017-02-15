@@ -75,7 +75,33 @@ class controllerWindow : public QMainWindow
 
 			void on_preset_delete_button_clicked();
 
-	private:
+            void on_red_fade_button_clicked();
+
+            void on_green_fade_button_clicked();
+
+            void on_blue_fade_button_clicked();
+
+            void on_speed_button_clicked();
+
+            void on_r_speed_slider_valueChanged(int value);
+
+            void on_g_speed_slider_valueChanged(int value);
+
+            void on_b_speed_slider_valueChanged(int value);
+
+            void on_rfrom_valueChanged(int arg1);
+
+            void on_rto_valueChanged(int arg1);
+
+            void on_gfrom_valueChanged(int arg1);
+
+            void on_gto_valueChanged(int arg1);
+
+            void on_bfrom_valueChanged(int arg1);
+
+            void on_bto_valueChanged(int arg1);
+
+private:
 		Ui::controllerWindow *ui;
 		/* serial communication object */
 		serial_communication portf;

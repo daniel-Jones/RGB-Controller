@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_controllerWindow_t {
-    QByteArrayData data[19];
-    char stringdata0[445];
+    QByteArrayData data[33];
+    char stringdata0[777];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -49,7 +49,21 @@ QT_MOC_LITERAL(14, 308, 28), // "on_set_preset_button_clicked"
 QT_MOC_LITERAL(15, 337, 39), // "on_presets_dropdown_currentIn..."
 QT_MOC_LITERAL(16, 377, 5), // "index"
 QT_MOC_LITERAL(17, 383, 29), // "on_preset_save_button_clicked"
-QT_MOC_LITERAL(18, 413, 31) // "on_preset_delete_button_clicked"
+QT_MOC_LITERAL(18, 413, 31), // "on_preset_delete_button_clicked"
+QT_MOC_LITERAL(19, 445, 26), // "on_red_fade_button_clicked"
+QT_MOC_LITERAL(20, 472, 28), // "on_green_fade_button_clicked"
+QT_MOC_LITERAL(21, 501, 27), // "on_blue_fade_button_clicked"
+QT_MOC_LITERAL(22, 529, 23), // "on_speed_button_clicked"
+QT_MOC_LITERAL(23, 553, 30), // "on_r_speed_slider_valueChanged"
+QT_MOC_LITERAL(24, 584, 30), // "on_g_speed_slider_valueChanged"
+QT_MOC_LITERAL(25, 615, 30), // "on_b_speed_slider_valueChanged"
+QT_MOC_LITERAL(26, 646, 21), // "on_rfrom_valueChanged"
+QT_MOC_LITERAL(27, 668, 4), // "arg1"
+QT_MOC_LITERAL(28, 673, 19), // "on_rto_valueChanged"
+QT_MOC_LITERAL(29, 693, 21), // "on_gfrom_valueChanged"
+QT_MOC_LITERAL(30, 715, 19), // "on_gto_valueChanged"
+QT_MOC_LITERAL(31, 735, 21), // "on_bfrom_valueChanged"
+QT_MOC_LITERAL(32, 757, 19) // "on_bto_valueChanged"
 
     },
     "controllerWindow\0on_connect_button_clicked\0"
@@ -64,7 +78,18 @@ QT_MOC_LITERAL(18, 413, 31) // "on_preset_delete_button_clicked"
     "on_set_preset_button_clicked\0"
     "on_presets_dropdown_currentIndexChanged\0"
     "index\0on_preset_save_button_clicked\0"
-    "on_preset_delete_button_clicked"
+    "on_preset_delete_button_clicked\0"
+    "on_red_fade_button_clicked\0"
+    "on_green_fade_button_clicked\0"
+    "on_blue_fade_button_clicked\0"
+    "on_speed_button_clicked\0"
+    "on_r_speed_slider_valueChanged\0"
+    "on_g_speed_slider_valueChanged\0"
+    "on_b_speed_slider_valueChanged\0"
+    "on_rfrom_valueChanged\0arg1\0"
+    "on_rto_valueChanged\0on_gfrom_valueChanged\0"
+    "on_gto_valueChanged\0on_bfrom_valueChanged\0"
+    "on_bto_valueChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -74,7 +99,7 @@ static const uint qt_meta_data_controllerWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      28,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -82,21 +107,34 @@ static const uint qt_meta_data_controllerWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   89,    2, 0x08 /* Private */,
-       3,    0,   90,    2, 0x08 /* Private */,
-       4,    0,   91,    2, 0x08 /* Private */,
-       5,    0,   92,    2, 0x08 /* Private */,
-       6,    1,   93,    2, 0x08 /* Private */,
-       8,    1,   96,    2, 0x08 /* Private */,
-       9,    1,   99,    2, 0x08 /* Private */,
-      10,    0,  102,    2, 0x08 /* Private */,
-      11,    0,  103,    2, 0x08 /* Private */,
-      12,    0,  104,    2, 0x08 /* Private */,
-      13,    0,  105,    2, 0x08 /* Private */,
-      14,    0,  106,    2, 0x08 /* Private */,
-      15,    1,  107,    2, 0x08 /* Private */,
-      17,    0,  110,    2, 0x08 /* Private */,
-      18,    0,  111,    2, 0x08 /* Private */,
+       1,    0,  154,    2, 0x08 /* Private */,
+       3,    0,  155,    2, 0x08 /* Private */,
+       4,    0,  156,    2, 0x08 /* Private */,
+       5,    0,  157,    2, 0x08 /* Private */,
+       6,    1,  158,    2, 0x08 /* Private */,
+       8,    1,  161,    2, 0x08 /* Private */,
+       9,    1,  164,    2, 0x08 /* Private */,
+      10,    0,  167,    2, 0x08 /* Private */,
+      11,    0,  168,    2, 0x08 /* Private */,
+      12,    0,  169,    2, 0x08 /* Private */,
+      13,    0,  170,    2, 0x08 /* Private */,
+      14,    0,  171,    2, 0x08 /* Private */,
+      15,    1,  172,    2, 0x08 /* Private */,
+      17,    0,  175,    2, 0x08 /* Private */,
+      18,    0,  176,    2, 0x08 /* Private */,
+      19,    0,  177,    2, 0x08 /* Private */,
+      20,    0,  178,    2, 0x08 /* Private */,
+      21,    0,  179,    2, 0x08 /* Private */,
+      22,    0,  180,    2, 0x08 /* Private */,
+      23,    1,  181,    2, 0x08 /* Private */,
+      24,    1,  184,    2, 0x08 /* Private */,
+      25,    1,  187,    2, 0x08 /* Private */,
+      26,    1,  190,    2, 0x08 /* Private */,
+      28,    1,  193,    2, 0x08 /* Private */,
+      29,    1,  196,    2, 0x08 /* Private */,
+      30,    1,  199,    2, 0x08 /* Private */,
+      31,    1,  202,    2, 0x08 /* Private */,
+      32,    1,  205,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -114,6 +152,19 @@ static const uint qt_meta_data_controllerWindow[] = {
     QMetaType::Void, QMetaType::Int,   16,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    7,
+    QMetaType::Void, QMetaType::Int,    7,
+    QMetaType::Void, QMetaType::Int,    7,
+    QMetaType::Void, QMetaType::Int,   27,
+    QMetaType::Void, QMetaType::Int,   27,
+    QMetaType::Void, QMetaType::Int,   27,
+    QMetaType::Void, QMetaType::Int,   27,
+    QMetaType::Void, QMetaType::Int,   27,
+    QMetaType::Void, QMetaType::Int,   27,
 
        0        // eod
 };
@@ -139,6 +190,19 @@ void controllerWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 12: _t->on_presets_dropdown_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 13: _t->on_preset_save_button_clicked(); break;
         case 14: _t->on_preset_delete_button_clicked(); break;
+        case 15: _t->on_red_fade_button_clicked(); break;
+        case 16: _t->on_green_fade_button_clicked(); break;
+        case 17: _t->on_blue_fade_button_clicked(); break;
+        case 18: _t->on_speed_button_clicked(); break;
+        case 19: _t->on_r_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 20: _t->on_g_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 21: _t->on_b_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 22: _t->on_rfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 23: _t->on_rto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 24: _t->on_gfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 25: _t->on_gto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 26: _t->on_bfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 27: _t->on_bto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -169,13 +233,13 @@ int controllerWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 28)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 28;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
+        if (_id < 28)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 15;
+        _id -= 28;
     }
     return _id;
 }

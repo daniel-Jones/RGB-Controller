@@ -70,8 +70,8 @@ public:
     QLabel *label_4;
     QLabel *info_log_label;
     QTextEdit *info_log_textarea;
-    QSlider *horizontalSlider;
-    QPushButton *pushButton_4;
+    QSlider *speed_slider;
+    QPushButton *speed_button;
 
     void setupUi(QMainWindow *controllerWindow)
     {
@@ -296,18 +296,18 @@ public:
 
         gridLayout_2->addWidget(info_log_textarea, 17, 0, 1, 2);
 
-        horizontalSlider = new QSlider(centralWidget);
-        horizontalSlider->setObjectName(QString::fromUtf8("horizontalSlider"));
-        horizontalSlider->setMinimum(10);
-        horizontalSlider->setMaximum(500);
-        horizontalSlider->setOrientation(Qt::Horizontal);
+        speed_slider = new QSlider(centralWidget);
+        speed_slider->setObjectName(QString::fromUtf8("speed_slider"));
+        speed_slider->setMinimum(10);
+        speed_slider->setMaximum(500);
+        speed_slider->setOrientation(Qt::Horizontal);
 
-        gridLayout_2->addWidget(horizontalSlider, 15, 0, 1, 1);
+        gridLayout_2->addWidget(speed_slider, 15, 0, 1, 1);
 
-        pushButton_4 = new QPushButton(centralWidget);
-        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
+        speed_button = new QPushButton(centralWidget);
+        speed_button->setObjectName(QString::fromUtf8("speed_button"));
 
-        gridLayout_2->addWidget(pushButton_4, 15, 1, 1, 1);
+        gridLayout_2->addWidget(speed_button, 15, 1, 1, 1);
 
         controllerWindow->setCentralWidget(centralWidget);
 
@@ -343,7 +343,7 @@ public:
         label_3->setText(QApplication::translate("controllerWindow", "to", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("controllerWindow", "Fade", 0, QApplication::UnicodeUTF8));
         info_log_label->setText(QApplication::translate("controllerWindow", "Information log", 0, QApplication::UnicodeUTF8));
-        pushButton_4->setText(QApplication::translate("controllerWindow", "Speed", 0, QApplication::UnicodeUTF8));
+        speed_button->setText(QApplication::translate("controllerWindow", "Speed", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

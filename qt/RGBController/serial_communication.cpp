@@ -36,12 +36,21 @@ bool serial_communication::serial_disconnect()
 	return false;
 }
 
+void serial_communication::send(QString com)
+{
+    data = "";
+    qDebug() << com;
+    data.append(com + "\n");
+    if (serial.isOpen())
+        serial.write(data);
+}
+
 void serial_communication::rgb_change(int r, int g, int b)
 {
 	/* here we send our rgb values to the serial port */
 	data = "";
 	/* the 0 is a hack, i need to look into it at some point */
-	data.append("0" + QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "\n");
+    data.append("red=" + QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "\n");
 	if (serial.isOpen())
 		serial.write(data);
 }

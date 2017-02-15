@@ -5,9 +5,15 @@ const int redPin = 2;
 const int greenPin = 4;
 const int bluePin = 3;
 
-int red;
-int green;
-int blue;
+int red = 0;
+int rf = 0;
+int rt = 255;
+int green = 0;
+int gf = 0;
+int gt = 255;
+int blue = 0;
+int bf = 0;
+int bt = 255;
 
 void red_thread();
 bool r_rev = false;
@@ -22,6 +28,8 @@ Thread r_fade = Thread();
 Thread g_fade = Thread();
 Thread b_fade = Thread();
 
+void parse(String com);
+
 void setup()
 {
 	Serial.begin(9600);
@@ -29,10 +37,6 @@ void setup()
 	pinMode(greenPin, OUTPUT);
 	pinMode(bluePin, OUTPUT);
 
-	/* set all values to 0 */
-	red = 0;
-	green = 0;
-	blue = 0;
 	r_fade.enabled = false;
 	r_fade.onRun(red_thread);
 	r_fade.setInterval(10);
@@ -49,9 +53,9 @@ void setup()
 
 void red_thread()
 {
-        if (red == 255)
+        if (red == rt)
                 r_rev = true;
-        if (red == 0)
+        if (red == rf)
                 r_rev = false;
         if (!r_rev)
                 red++;analogWrite(redPin, red);
@@ -61,9 +65,9 @@ void red_thread()
 
 void green_thread()
 {
-        if (green == 255)
+        if (green == gt)
                 g_rev = true;
-        if (green == 0)
+        if (green == gf)
                 g_rev = false;
         if (!g_rev)
                 green++;analogWrite(greenPin, green);
@@ -74,9 +78,9 @@ void green_thread()
 
 void blue_thread()
 {
-        if (blue == 255)
+        if (blue == bt)
                 b_rev = true;
-        if (blue == 0)
+        if (blue == bf)
                 b_rev = false;
         if (!b_rev)
                 blue++;analogWrite(bluePin, blue);
@@ -84,6 +88,86 @@ void blue_thread()
                 blue--;analogWrite(bluePin, blue);
 }
 
+void parse(String com)
+{
+	String p1;
+	String p2;
+
+	p1 = com.substring(0, com.indexOf("="));
+	p2 = com.substring(com.indexOf("=") + 1);
+
+	if (p1.equalsIgnoreCase("red"))
+	{
+		red = p2.toInt();
+		analogWrite(redPin, red);
+	}
+	if (p1.equalsIgnoreCase("green"))
+        {
+                green = p2.toInt();
+		analogWrite(greenPin, green);
+        }
+	if (p1.equalsIgnoreCase("blue"))
+        {
+                blue = p2.toInt();
+		analogWrite(bluePin, blue);
+        }
+	if (p1.equalsIgnoreCase("redfade"))
+        {
+		if (r_fade.enabled)
+	                r_fade.enabled = false;
+		else if (!r_fade.enabled)
+			r_fade.enabled = true;
+        }
+	if (p1.equalsIgnoreCase("greenfade"))
+        {
+                if (g_fade.enabled)
+                        g_fade.enabled = false;
+                else if (!g_fade.enabled)
+                        g_fade.enabled = true;
+        }
+	if (p1.equalsIgnoreCase("bluefade"))
+        {
+                if (b_fade.enabled)
+                        b_fade.enabled = false;
+                else if (!b_fade.enabled)
+                        b_fade.enabled = true;
+        }
+	 if (p1.equalsIgnoreCase("rspeed"))
+	 {
+		 r_fade.setInterval(p2.toInt());
+	 }
+	 if (p1.equalsIgnoreCase("gspeed"))
+         {
+                 g_fade.setInterval(p2.toInt());
+         }
+
+	 if (p1.equalsIgnoreCase("bspeed"))
+         {
+                 b_fade.setInterval(p2.toInt());
+         }
+
+	if (p1.equalsIgnoreCase("speed"))
+        {
+		r_fade.setInterval(p2.toInt());
+		g_fade.setInterval(p2.toInt());
+		b_fade.setInterval(p2.toInt());
+	}
+	if (p1.equalsIgnoreCase("rf"))
+		rf = p2.toInt();
+	if (p1.equalsIgnoreCase("rt"))
+		rt = p2.toInt();
+	if (p1.equalsIgnoreCase("gf"))
+                gf = p2.toInt();
+        if (p1.equalsIgnoreCase("gt"))
+                gt = p2.toInt();
+	if (p1.equalsIgnoreCase("bf"))
+                bf = p2.toInt();
+        if (p1.equalsIgnoreCase("bt"))
+                bt = p2.toInt();
+
+}
+
+String line;
 
 void loop()
 {
@@ -95,14 +179,18 @@ void loop()
                 b_fade.run();
 
 	/* read serial data */
-	while (Serial.available() > 1)
+	while (Serial.available())
 	{
+		char c = Serial.read();
+		if (c == '\n')
+		{
+			parse(line);
+			line = "";
+		}
+		else 
+		{
+			line += c;
+		}
 
-		red = Serial.parseInt();
-		green = Serial.parseInt();
-		blue = Serial.parseInt();
-		analogWrite(redPin, red);
-		analogWrite(greenPin, green);
-		analogWrite(bluePin, blue);
 	}
 }

@@ -4,6 +4,7 @@
 /* includes */
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QDebug>
 
 
 class serial_communication
@@ -14,6 +15,7 @@ class serial_communication
 		bool serial_connect(QString port);
 		bool serial_disconnect();
 		void rgb_change(int r, int g, int b);
+        void send(QString com);
 		/* variables */
 		QString port_name;
 		QSerialPort serial;

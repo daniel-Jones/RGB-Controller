@@ -301,19 +301,22 @@ void controllerWindow::on_reload_preset_button_clicked()
 void controllerWindow::on_r_slider_valueChanged(int value)
 {
 	r = value;
-	serial_rgb_change(r, g, b);
+    //serial_rgb_change(r, g, b);
+    portf.send("red=" + QString::number(r));
 }
 
 void controllerWindow::on_g_slider_valueChanged(int value)
 {
 	g = value;
-	serial_rgb_change(r, g, b);
+    //serial_rgb_change(r, g, b);
+    portf.send("green=" + QString::number(g));
 }
 
 void controllerWindow::on_b_slider_valueChanged(int value)
 {
 	b = value;
-	serial_rgb_change(r, g, b);
+    //serial_rgb_change(r, g, b);
+    portf.send("blue=" + QString::number(b));
 }
 
 void controllerWindow::on_red_button_clicked()
@@ -339,6 +342,9 @@ void controllerWindow::on_blue_button_clicked()
 
 void controllerWindow::on_off_button_clicked()
 {
+    ui->r_slider->setValue(1);
+    ui->g_slider->setValue(1);
+    ui->b_slider->setValue(1);
 	ui->r_slider->setValue(0);
 	ui->g_slider->setValue(0);
 	ui->b_slider->setValue(0);
@@ -382,4 +388,70 @@ void controllerWindow::on_preset_save_button_clicked()
 void controllerWindow::on_preset_delete_button_clicked()
 {
 	delete_preset(ui->presets_dropdown->currentText());
+}
+
+void controllerWindow::on_red_fade_button_clicked()
+{
+    portf.send("redfade");
+}
+
+void controllerWindow::on_green_fade_button_clicked()
+{
+    portf.send("greenfade");
+}
+
+void controllerWindow::on_blue_fade_button_clicked()
+{
+    portf.send("bluefade");
+}
+
+void controllerWindow::on_speed_button_clicked()
+{
+    portf.send("speed=" + QString::number(ui->speed_slider->value()));
+}
+
+void controllerWindow::on_r_speed_slider_valueChanged(int value)
+{
+    portf.send("rspeed=" + QString::number(value));
+}
+
+void controllerWindow::on_g_speed_slider_valueChanged(int value)
+{
+    portf.send("gspeed=" + QString::number(value));
+}
+
+void controllerWindow::on_b_speed_slider_valueChanged(int value)
+{
+    portf.send("bspeed=" + QString::number(value));
+}
+
+void controllerWindow::on_rfrom_valueChanged(int arg1)
+{
+    portf.send("rf=" + QString::number(arg1));
+    ui->r_slider->setValue(arg1);
+}
+
+void controllerWindow::on_rto_valueChanged(int arg1)
+{
+
+}
+
+void controllerWindow::on_gfrom_valueChanged(int arg1)
+{
+
+}
+
+void controllerWindow::on_gto_valueChanged(int arg1)
+{
+
+}
+
+void controllerWindow::on_bfrom_valueChanged(int arg1)
+{
+
+}
+
+void controllerWindow::on_bto_valueChanged(int arg1)
+{
+
 }
