@@ -433,25 +433,27 @@ void controllerWindow::on_rfrom_valueChanged(int arg1)
 
 void controllerWindow::on_rto_valueChanged(int arg1)
 {
-
+    portf.send("rt=" + QString::number(arg1));
 }
 
 void controllerWindow::on_gfrom_valueChanged(int arg1)
 {
-
+    portf.send("gf=" + QString::number(arg1));
+    ui->g_slider->setValue(arg1);
 }
 
 void controllerWindow::on_gto_valueChanged(int arg1)
 {
-
+portf.send("gt=" + QString::number(arg1));
 }
 
 void controllerWindow::on_bfrom_valueChanged(int arg1)
 {
-
+    portf.send("bf=" + QString::number(arg1));
+    ui->b_slider->setValue(arg1);
 }
 
 void controllerWindow::on_bto_valueChanged(int arg1)
 {
-
+    portf.send("bt=" + QString::number(arg1));
 }
