@@ -164,7 +164,6 @@ void parse(String com)
                 bf = p2.toInt();
         if (p1.equalsIgnoreCase("bt"))
                 bt = p2.toInt();
-
 }
 
 String line;

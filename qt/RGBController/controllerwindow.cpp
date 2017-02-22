@@ -26,6 +26,30 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	ui->r_slider->setValue(0);
 	ui->g_slider->setValue(0);
 	ui->b_slider->setValue(0);
+    ui->red_fade_button->setEnabled(false);
+    ui->green_fade_button->setEnabled(false);
+    ui->blue_fade_button->setEnabled(false);
+    ui->speed_button->setEnabled(false);
+    ui->rfrom->setEnabled(false);
+    ui->rto->setEnabled(false);
+    ui->gfrom->setEnabled(false);
+    ui->gto->setEnabled(false);
+    ui->bfrom->setEnabled(false);
+    ui->bto->setEnabled(false);
+    ui->r_speed_slider->setEnabled(false);
+    ui->g_speed_slider->setEnabled(false);
+    ui->b_speed_slider->setEnabled(false);
+    ui->speed_slider->setEnabled(false);
+    ui->r_speed_slider->setValue(0);
+    ui->g_speed_slider->setValue(0);
+    ui->b_speed_slider->setValue(0);
+    ui->speed_slider->setValue(0);
+    ui->rfrom->setValue(0);
+    ui->rto->setValue(0);
+    ui->gfrom->setValue(0);
+    ui->gto->setValue(0);
+    ui->bfrom->setValue(0);
+    ui->bto->setValue(0);
 	/* set some crucial ints */
 	preset_index = 0, r = 0, g = 0, b = 0;
 	/* populate our serial port dropdown box */
@@ -241,6 +265,20 @@ void controllerWindow::on_connect_button_clicked()
 		ui->b_slider->setEnabled(true);
 		ui->refresh_port_button->setEnabled(false);
 		ui->arduino_port_dropdown->setEnabled(false);
+        ui->red_fade_button->setEnabled(true);
+        ui->green_fade_button->setEnabled(true);
+        ui->green_fade_button->setEnabled(true);
+        ui->speed_button->setEnabled(true);
+        ui->rfrom->setEnabled(true);
+        ui->rto->setEnabled(true);
+        ui->gfrom->setEnabled(true);
+        ui->gto->setEnabled(true);
+        ui->bfrom->setEnabled(true);
+        ui->bto->setEnabled(true);
+        ui->r_speed_slider->setEnabled(true);
+        ui->g_speed_slider->setEnabled(true);
+        ui->b_speed_slider->setEnabled(true);
+        ui->speed_slider->setEnabled(true);
 	} else
 	{
 		info_log("Unable to connect (port in use?)");
@@ -278,6 +316,15 @@ void controllerWindow::on_disconnect_button_clicked()
 		ui->r_slider->setValue(0);
 		ui->g_slider->setValue(0);
 		ui->b_slider->setValue(0);
+        ui->r_speed_slider->setValue(0);
+        ui->g_speed_slider->setValue(0);
+        ui->b_speed_slider->setValue(0);
+        ui->rfrom->setValue(0);
+        ui->rto->setValue(0);
+        ui->gfrom->setValue(0);
+        ui->gto->setValue(0);
+        ui->bfrom->setValue(0);
+        ui->bto->setValue(0);
 	} else
 	{
 		/* I have no clue how we'd get here */

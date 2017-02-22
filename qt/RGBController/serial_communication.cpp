@@ -39,7 +39,7 @@ bool serial_communication::serial_disconnect()
 void serial_communication::send(QString com)
 {
     data = "";
-    qDebug() << com;
+    //qDebug() << com;
     data.append(com + "\n");
     if (serial.isOpen())
         serial.write(data);
@@ -47,6 +47,8 @@ void serial_communication::send(QString com)
 
 void serial_communication::rgb_change(int r, int g, int b)
 {
+    // NOT USED FUNCTION
+
 	/* here we send our rgb values to the serial port */
 	data = "";
 	/* the 0 is a hack, i need to look into it at some point */
