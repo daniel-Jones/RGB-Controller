@@ -53,6 +53,10 @@ void setup()
 
 void red_thread()
 {
+	if (red < rf)
+		red = rf;
+	if (red > rt)
+		red = rf;
         if (red == rt)
                 r_rev = true;
         if (red == rf)
@@ -65,6 +69,10 @@ void red_thread()
 
 void green_thread()
 {
+	if (red < rf)
+                green = gf;
+        if (green > gt)
+                green = gf;
         if (green == gt)
                 g_rev = true;
         if (green == gf)
@@ -78,6 +86,10 @@ void green_thread()
 
 void blue_thread()
 {
+	if (blue < bf)
+                red = bf;
+        if (blue > bt)
+                blue = bf;
         if (blue == bt)
                 b_rev = true;
         if (blue == bf)
