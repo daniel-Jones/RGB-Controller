@@ -9,6 +9,8 @@
 #include <QSerialPortInfo>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QStandardPaths>
+#include <QDir>
 #include "serial_communication.h"
 #include "ui_controllerwindow.h"
 
@@ -42,6 +44,8 @@ class controllerWindow : public QMainWindow
 		QString port;
 		/* this int will contain the current preset index selected */
 		int preset_index;
+        QString presetsfile;
+        QString tempfile;
 
 		private slots:
 			/* these slots are used to trigger button clicks and drop down items selections etc */

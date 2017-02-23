@@ -4,6 +4,7 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::controllerWindow)
 {
+    /* TODO convert to QStandardPaths::standardLocations(QStandardPaths::AppDataLocation) */
 	/* this is our setup function, we set things up here */
 	ui->setupUi(this);
 	info_log("RGB Controller started");
@@ -50,6 +51,8 @@ controllerWindow::controllerWindow(QWidget *parent) :
     ui->gto->setValue(0);
     ui->bfrom->setValue(0);
     ui->bto->setValue(0);
+    presetsfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/presets.txt";
+    tempfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/tmp.file";
 	/* set some crucial ints */
 	preset_index = 0, r = 0, g = 0, b = 0;
 	/* populate our serial port dropdown box */
@@ -108,7 +111,7 @@ void controllerWindow::load_presets()
 	 * -> add [0] to dropdown (name), add [1] to an array that stores all the values
 	 */
 
-	QFile inputFile("presets.txt");
+    QFile inputFile(presetsfile);
 	if (inputFile.open(QIODevice::ReadOnly))
 	{
 		QTextStream in(&inputFile);
@@ -125,7 +128,7 @@ void controllerWindow::load_presets()
 		info_log("Presets loaded");
 	} else
 	{
-		show_msgbox("Unable to find the presets file.\nThis file needs to be named 'presets.txt' and be located in the same directory as the binary.");
+        show_msgbox("Unable to load the presets file.\n");
 		info_log("Presets file not found.");
 	}
 }
@@ -133,7 +136,9 @@ void controllerWindow::load_presets()
 void controllerWindow::save_preset(QString name)
 {
 	/* this function will save our preset to file */
-	QFile file("presets.txt");
+    if (!QDir("Folder").exists())
+        QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    QFile file(presetsfile);
 	if(!file.open(QIODevice::Append)) {
 		show_msgbox("Fatal error opening presets for appending text.");
 
@@ -155,7 +160,7 @@ void controllerWindow::delete_preset(QString name)
 {
 	/*
 	 * here we will delete a preset from the presets file
-	 * process:
+     * process:
 	 * retrieve preset name
 	 * go through preset file line by line and write it to a seperate tmp file
 	 * if the [0] of split('=') equals the preset name, don't write it to the tmp file
@@ -167,8 +172,8 @@ void controllerWindow::delete_preset(QString name)
 	{
 		case QMessageBox::Ok:
 			{
-				info_log("deleting preset: " + name);
-				QFile file("tmp.file");
+                info_log("deleting preset: " + name);
+                QFile file(tempfile);
 				if(!file.open(QIODevice::Append)) {
 					show_msgbox("Fatal error opening temp file for writing");
 
@@ -185,8 +190,8 @@ void controllerWindow::delete_preset(QString name)
 					}
 					file.close();
 					/* remove the current presets file then rename the temp file to presets.txt */
-					QFile::remove("presets.txt");
-					QFile::rename("tmp.file", "presets.txt");
+                    QFile::remove(presetsfile);
+                    QFile::rename(tempfile, presetsfile);
 					/* reload presets into memory and clear the drop down box */
 					ui->presets_dropdown->clear();
 					presets.clear();
