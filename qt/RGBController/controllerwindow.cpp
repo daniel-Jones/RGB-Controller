@@ -213,6 +213,7 @@ void controllerWindow::delete_preset(QString name)
 
 void controllerWindow::serial_rgb_change(int r, int g, int b)
 {
+    /* un used function */
 	portf.rgb_change(r, g, b);
 }
 
