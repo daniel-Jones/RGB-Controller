@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>232</width>
+    <width>238</width>
     <height>629</height>
    </rect>
   </property>
@@ -53,15 +53,15 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="arduino_port_dropdown"/>
+    </item>
     <item row="0" column="1">
      <widget class="QLabel" name="arduino_status_label">
       <property name="text">
        <string>&lt;font color = red&gt;Disconnected&lt;/font&gt;</string>
       </property>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QComboBox" name="arduino_port_dropdown"/>
     </item>
     <item row="7" column="0">
      <widget class="QSlider" name="b_slider">
@@ -402,6 +402,16 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
+    </item>
+    <item row="21" column="1">
+     <widget class="QPushButton" name="serial_send_button">
+      <property name="text">
+       <string>Send</string>
+      </property>
+     </widget>
+    </item>
+    <item row="21" column="0">
+     <widget class="QLineEdit" name="serial_input"/>
     </item>
    </layout>
   </widget>

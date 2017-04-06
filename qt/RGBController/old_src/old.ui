@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>controllerWindow</class>
+ <widget class="QMainWindow" name="controllerWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>325</width>
+    <height>686</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>RGB Controller</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="22" column="1">
+     <widget class="QPushButton" name="preset_delete_button">
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QSlider" name="g_slider">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>120</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="connect_button">
+      <property name="text">
+       <string>Connect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QSlider" name="r_slider">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>120</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="21" column="0">
+     <widget class="QLineEdit" name="preset_name_textbox"/>
+    </item>
+    <item row="19" column="0">
+     <widget class="QSlider" name="g_speed_slider">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>500</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QPushButton" name="red_button">
+      <property name="text">
+       <string>Red</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="arduino_port_dropdown"/>
+    </item>
+    <item row="14" column="0">
+     <widget class="QPushButton" name="speed_button">
+      <property name="text">
+       <string>Speed</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="rgb_label">
+      <property name="text">
+       <string>RGB colors</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QSlider" name="b_slider">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>120</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="15" column="0">
+     <widget class="QSlider" name="b_speed_slider">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>500</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QPushButton" name="set_preset_button">
+      <property name="text">
+       <string>Set</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="0">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="5" column="0">
+       <widget class="QSpinBox" name="bfrom">
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="fade_label">
+        <property name="text">
+         <string>Fade</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QSpinBox" name="rfrom">
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="QPushButton" name="blue_fade_button">
+        <property name="text">
+         <string>Blue toggle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QPushButton" name="red_fade_button">
+        <property name="text">
+         <string>Red toggle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="r_to_label">
+        <property name="text">
+         <string>to</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QSpinBox" name="gfrom">
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QPushButton" name="green_fade_button">
+        <property name="text">
+         <string>Green toggle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QSpinBox" name="bto">
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QSpinBox" name="gto">
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="_to_label">
+        <property name="text">
+         <string>to</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="g_to_label">
+        <property name="text">
+         <string>to</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QSpinBox" name="rto">
+        <property name="maximum">
+         <number>255</number>
+        </property>
+        <property name="value">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="presets_label">
+      <property name="text">
+       <string>Presets</string>
+      </property>
+     </widget>
+    </item>
+    <item row="23" column="0">
+     <widget class="QTextEdit" name="info_log_textarea"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QPushButton" name="disconnect_button">
+      <property name="text">
+       <string>Disconnect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="20" column="0">
+     <widget class="QLabel" name="r_speed_label">
+      <property name="text">
+       <string>Red speed</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="arduino_port_label">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Arduino port</string>
+      </property>
+     </widget>
+    </item>
+    <item row="18" column="0">
+     <widget class="QLabel" name="b_speed_label">
+      <property name="text">
+       <string>Blue speed</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="0">
+     <widget class="QSlider" name="speed_slider">
+      <property name="minimum">
+       <number>10</number>
+      </property>
+      <property name="maximum">
+       <number>500</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="arduino_status_label">
+      <property name="text">
+       <string>&lt;font color = red&gt;Disconnected&lt;/font&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="1">
+     <widget class="QPushButton" name="off_button">
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="0">
+     <widget class="QSlider" name="r_speed_slider">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>500</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="status_label">
+      <property name="text">
+       <string>Status</string>
+      </property>
+     </widget>
+    </item>
+    <item row="21" column="1">
+     <widget class="QPushButton" name="preset_save_button">
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QComboBox" name="presets_dropdown">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QPushButton" name="blue_button">
+      <property name="text">
+       <string>Blue</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="refresh_port_button">
+      <property name="text">
+       <string>Refresh</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QPushButton" name="green_button">
+      <property name="text">
+       <string>Green</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QPushButton" name="reload_preset_button">
+      <property name="text">
+       <string>Reload</string>
+      </property>
+     </widget>
+    </item>
+    <item row="22" column="0">
+     <widget class="QLabel" name="info_log_label">
+      <property name="text">
+       <string>Information log</string>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0">
+     <widget class="QLabel" name="g_speed_label">
+      <property name="text">
+       <string>Green speed</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

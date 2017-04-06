@@ -49,11 +49,9 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../RGBController/main.cpp \
-		../RGBController/controllerwindow.cpp \
-		../RGBController/serial_communication.cpp moc_controllerwindow.cpp
+		../RGBController/controllerwindow.cpp moc_controllerwindow.cpp
 OBJECTS       = main.o \
 		controllerwindow.o \
-		serial_communication.o \
 		moc_controllerwindow.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -259,6 +257,7 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		../RGBController/.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -277,10 +276,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
-		../RGBController/RGBController.pro ../RGBController/controllerwindow.h \
-		../RGBController/serial_communication.h ../RGBController/main.cpp \
-		../RGBController/controllerwindow.cpp \
-		../RGBController/serial_communication.cpp
+		../RGBController/RGBController.pro ../RGBController/controllerwindow.h ../RGBController/main.cpp \
+		../RGBController/controllerwindow.cpp
 QMAKE_TARGET  = RGBController
 DESTDIR       = 
 TARGET        = RGBController
@@ -496,6 +493,7 @@ Makefile: ../RGBController/RGBController.pro /usr/lib/qt/mkspecs/linux-g++/qmake
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -725,6 +723,7 @@ Makefile: ../RGBController/RGBController.pro /usr/lib/qt/mkspecs/linux-g++/qmake
 /usr/lib/qt/mkspecs/features/qt_config.prf:
 /usr/lib/qt/mkspecs/linux-g++/qmake.conf:
 /usr/lib/qt/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/qt/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt/mkspecs/features/toolchain.prf:
 /usr/lib/qt/mkspecs/features/default_pre.prf:
@@ -764,8 +763,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../RGBController/controllerwindow.h ../RGBController/serial_communication.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../RGBController/main.cpp ../RGBController/controllerwindow.cpp ../RGBController/serial_communication.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../RGBController/controllerwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../RGBController/main.cpp ../RGBController/controllerwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../RGBController/controllerwindow.ui $(DISTDIR)/
 
 
@@ -801,8 +800,7 @@ moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_controllerwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_controllerwindow.cpp
-moc_controllerwindow.cpp: ../RGBController/serial_communication.h \
-		../RGBController/ui_controllerwindow.h \
+moc_controllerwindow.cpp: ../RGBController/ui_controllerwindow.h \
 		../RGBController/controllerwindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
@@ -828,19 +826,12 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: ../RGBController/main.cpp ../RGBController/controllerwindow.h \
-		../RGBController/serial_communication.h \
 		../RGBController/ui_controllerwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../RGBController/main.cpp
 
 controllerwindow.o: ../RGBController/controllerwindow.cpp ../RGBController/controllerwindow.h \
-		../RGBController/serial_communication.h \
 		../RGBController/ui_controllerwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controllerwindow.o ../RGBController/controllerwindow.cpp
-
-serial_communication.o: ../RGBController/serial_communication.cpp ../RGBController/serial_communication.h \
-		../RGBController/controllerwindow.h \
-		../RGBController/ui_controllerwindow.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o serial_communication.o ../RGBController/serial_communication.cpp
 
 moc_controllerwindow.o: moc_controllerwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_controllerwindow.o moc_controllerwindow.cpp

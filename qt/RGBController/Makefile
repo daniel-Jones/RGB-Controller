@@ -49,11 +49,9 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = main.cpp \
-		controllerwindow.cpp \
-		serial_communication.cpp moc_controllerwindow.cpp
+		controllerwindow.cpp moc_controllerwindow.cpp
 OBJECTS       = main.o \
 		controllerwindow.o \
-		serial_communication.o \
 		moc_controllerwindow.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
@@ -166,6 +164,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_lib_multimediawidgets_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_network.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_network_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_networkauth.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_networkauth_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_nfc.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_nfc_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_opengl.pri \
@@ -276,10 +276,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
-		RGBController.pro controllerwindow.h \
-		serial_communication.h main.cpp \
-		controllerwindow.cpp \
-		serial_communication.cpp
+		RGBController.pro controllerwindow.h main.cpp \
+		controllerwindow.cpp
 QMAKE_TARGET  = RGBController
 DESTDIR       = 
 TARGET        = RGBController
@@ -402,6 +400,8 @@ Makefile: RGBController.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt
 		/usr/lib/qt/mkspecs/modules/qt_lib_multimediawidgets_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_network.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_network_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_networkauth.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_networkauth_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_nfc.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_nfc_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_opengl.pri \
@@ -630,6 +630,8 @@ Makefile: RGBController.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt
 /usr/lib/qt/mkspecs/modules/qt_lib_multimediawidgets_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_network.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_network_private.pri:
+/usr/lib/qt/mkspecs/modules/qt_lib_networkauth.pri:
+/usr/lib/qt/mkspecs/modules/qt_lib_networkauth_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_nfc.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_nfc_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_opengl.pri:
@@ -761,8 +763,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents controllerwindow.h serial_communication.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp controllerwindow.cpp serial_communication.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents controllerwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp controllerwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents controllerwindow.ui $(DISTDIR)/
 
 
@@ -798,8 +800,7 @@ moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 compiler_moc_header_make_all: moc_controllerwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_controllerwindow.cpp
-moc_controllerwindow.cpp: serial_communication.h \
-		ui_controllerwindow.h \
+moc_controllerwindow.cpp: ui_controllerwindow.h \
 		controllerwindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
@@ -825,19 +826,12 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: main.cpp controllerwindow.h \
-		serial_communication.h \
 		ui_controllerwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 controllerwindow.o: controllerwindow.cpp controllerwindow.h \
-		serial_communication.h \
 		ui_controllerwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controllerwindow.o controllerwindow.cpp
-
-serial_communication.o: serial_communication.cpp serial_communication.h \
-		controllerwindow.h \
-		ui_controllerwindow.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o serial_communication.o serial_communication.cpp
 
 moc_controllerwindow.o: moc_controllerwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_controllerwindow.o moc_controllerwindow.cpp

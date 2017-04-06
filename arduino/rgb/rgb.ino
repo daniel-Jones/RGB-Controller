@@ -104,7 +104,6 @@ void parse(String com)
 {
 	String p1;
 	String p2;
-
 	p1 = com.substring(0, com.indexOf("="));
 	p2 = com.substring(com.indexOf("=") + 1);
 
@@ -176,6 +175,8 @@ void parse(String com)
                 bf = p2.toInt();
         if (p1.equalsIgnoreCase("bt"))
                 bt = p2.toInt();
+	if (p1.equalsIgnoreCase("ping"))
+		Serial.write("ping=pong\n");
 }
 
 String line;
@@ -202,6 +203,5 @@ void loop()
 		{
 			line += c;
 		}
-
 	}
 }

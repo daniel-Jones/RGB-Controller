@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_controllerWindow_t {
-    QByteArrayData data[33];
-    char stringdata0[777];
+    QByteArrayData data[36];
+    char stringdata0[823];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -63,7 +63,10 @@ QT_MOC_LITERAL(28, 673, 19), // "on_rto_valueChanged"
 QT_MOC_LITERAL(29, 693, 21), // "on_gfrom_valueChanged"
 QT_MOC_LITERAL(30, 715, 19), // "on_gto_valueChanged"
 QT_MOC_LITERAL(31, 735, 21), // "on_bfrom_valueChanged"
-QT_MOC_LITERAL(32, 757, 19) // "on_bto_valueChanged"
+QT_MOC_LITERAL(32, 757, 19), // "on_bto_valueChanged"
+QT_MOC_LITERAL(33, 777, 29), // "on_serial_send_button_clicked"
+QT_MOC_LITERAL(34, 807, 4), // "ping"
+QT_MOC_LITERAL(35, 812, 10) // "check_ping"
 
     },
     "controllerWindow\0on_connect_button_clicked\0"
@@ -89,7 +92,8 @@ QT_MOC_LITERAL(32, 757, 19) // "on_bto_valueChanged"
     "on_rfrom_valueChanged\0arg1\0"
     "on_rto_valueChanged\0on_gfrom_valueChanged\0"
     "on_gto_valueChanged\0on_bfrom_valueChanged\0"
-    "on_bto_valueChanged"
+    "on_bto_valueChanged\0on_serial_send_button_clicked\0"
+    "ping\0check_ping"
 };
 #undef QT_MOC_LITERAL
 
@@ -99,7 +103,7 @@ static const uint qt_meta_data_controllerWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      28,   14, // methods
+      31,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -107,34 +111,37 @@ static const uint qt_meta_data_controllerWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  154,    2, 0x08 /* Private */,
-       3,    0,  155,    2, 0x08 /* Private */,
-       4,    0,  156,    2, 0x08 /* Private */,
-       5,    0,  157,    2, 0x08 /* Private */,
-       6,    1,  158,    2, 0x08 /* Private */,
-       8,    1,  161,    2, 0x08 /* Private */,
-       9,    1,  164,    2, 0x08 /* Private */,
-      10,    0,  167,    2, 0x08 /* Private */,
-      11,    0,  168,    2, 0x08 /* Private */,
-      12,    0,  169,    2, 0x08 /* Private */,
-      13,    0,  170,    2, 0x08 /* Private */,
-      14,    0,  171,    2, 0x08 /* Private */,
-      15,    1,  172,    2, 0x08 /* Private */,
-      17,    0,  175,    2, 0x08 /* Private */,
-      18,    0,  176,    2, 0x08 /* Private */,
-      19,    0,  177,    2, 0x08 /* Private */,
-      20,    0,  178,    2, 0x08 /* Private */,
-      21,    0,  179,    2, 0x08 /* Private */,
-      22,    0,  180,    2, 0x08 /* Private */,
-      23,    1,  181,    2, 0x08 /* Private */,
-      24,    1,  184,    2, 0x08 /* Private */,
-      25,    1,  187,    2, 0x08 /* Private */,
-      26,    1,  190,    2, 0x08 /* Private */,
-      28,    1,  193,    2, 0x08 /* Private */,
-      29,    1,  196,    2, 0x08 /* Private */,
-      30,    1,  199,    2, 0x08 /* Private */,
-      31,    1,  202,    2, 0x08 /* Private */,
-      32,    1,  205,    2, 0x08 /* Private */,
+       1,    0,  169,    2, 0x08 /* Private */,
+       3,    0,  170,    2, 0x08 /* Private */,
+       4,    0,  171,    2, 0x08 /* Private */,
+       5,    0,  172,    2, 0x08 /* Private */,
+       6,    1,  173,    2, 0x08 /* Private */,
+       8,    1,  176,    2, 0x08 /* Private */,
+       9,    1,  179,    2, 0x08 /* Private */,
+      10,    0,  182,    2, 0x08 /* Private */,
+      11,    0,  183,    2, 0x08 /* Private */,
+      12,    0,  184,    2, 0x08 /* Private */,
+      13,    0,  185,    2, 0x08 /* Private */,
+      14,    0,  186,    2, 0x08 /* Private */,
+      15,    1,  187,    2, 0x08 /* Private */,
+      17,    0,  190,    2, 0x08 /* Private */,
+      18,    0,  191,    2, 0x08 /* Private */,
+      19,    0,  192,    2, 0x08 /* Private */,
+      20,    0,  193,    2, 0x08 /* Private */,
+      21,    0,  194,    2, 0x08 /* Private */,
+      22,    0,  195,    2, 0x08 /* Private */,
+      23,    1,  196,    2, 0x08 /* Private */,
+      24,    1,  199,    2, 0x08 /* Private */,
+      25,    1,  202,    2, 0x08 /* Private */,
+      26,    1,  205,    2, 0x08 /* Private */,
+      28,    1,  208,    2, 0x08 /* Private */,
+      29,    1,  211,    2, 0x08 /* Private */,
+      30,    1,  214,    2, 0x08 /* Private */,
+      31,    1,  217,    2, 0x08 /* Private */,
+      32,    1,  220,    2, 0x08 /* Private */,
+      33,    0,  223,    2, 0x08 /* Private */,
+      34,    0,  224,    2, 0x08 /* Private */,
+      35,    0,  225,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -165,6 +172,9 @@ static const uint qt_meta_data_controllerWindow[] = {
     QMetaType::Void, QMetaType::Int,   27,
     QMetaType::Void, QMetaType::Int,   27,
     QMetaType::Void, QMetaType::Int,   27,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -203,6 +213,9 @@ void controllerWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 25: _t->on_gto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 26: _t->on_bfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 27: _t->on_bto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 28: _t->on_serial_send_button_clicked(); break;
+        case 29: _t->ping(); break;
+        case 30: _t->check_ping(); break;
         default: ;
         }
     }
@@ -233,13 +246,13 @@ int controllerWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 28)
+        if (_id < 31)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 28;
+        _id -= 31;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 28)
+        if (_id < 31)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 28;
+        _id -= 31;
     }
     return _id;
 }

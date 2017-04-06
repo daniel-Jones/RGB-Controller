@@ -35,9 +35,11 @@ int main(int argc, char *argv[])
 			QTimer::singleShot(100, check);
 		}
 		else
-			qDebug() << "nope." << argv[2];
+		{
+			qDebug() << "Port in use.";
+		}
 	}
-	return a.exec();
+	return 0;
 }
 
 void check()

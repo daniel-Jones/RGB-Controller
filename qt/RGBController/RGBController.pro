@@ -13,10 +13,9 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        controllerwindow.cpp \
-    serial_communication.cpp
+        controllerwindow.cpp
 
-HEADERS  += controllerwindow.h \
-    serial_communication.h
+
+HEADERS  += controllerwindow.h
 
 FORMS    += controllerwindow.ui

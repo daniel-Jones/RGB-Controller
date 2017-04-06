@@ -1,8 +1,9 @@
 #include "serial_communication.h"
 #include "controllerwindow.h"
+
 serial_communication::serial_communication()
 {
-
+	qDebug() << "serial test";
 }
 
 bool serial_communication::serial_connect(QString port)
@@ -55,4 +56,9 @@ void serial_communication::rgb_change(int r, int g, int b)
     data.append("red=" + QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "\n");
 	if (serial.isOpen())
 		serial.write(data);
+}
+
+void serial_communication::read()
+{
+	qDebug() << "serial read";
 }

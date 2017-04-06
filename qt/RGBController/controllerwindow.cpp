@@ -4,10 +4,15 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::controllerWindow)
 {
-    /* TODO convert to QStandardPaths::standardLocations(QStandardPaths::AppDataLocation) */
 	/* this is our setup function, we set things up here */
 	ui->setupUi(this);
 	info_log("RGB Controller started");
+	/* serial */
+	ser = new QSerialPort(this);
+	connect(ser, &QSerialPort::readyRead, this, &controllerWindow::read);
+	ptimer = new QTimer(this);
+	connect(ptimer, SIGNAL(timeout()), this, SLOT(ping()));
+	pingtries = 0;
 	/* disable buttons and widgets that should not be enabled yet, set slider values to 0 */
 	ui->disconnect_button->setEnabled(false);
 	ui->connect_button->setEnabled(false);
@@ -27,32 +32,32 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	ui->r_slider->setValue(0);
 	ui->g_slider->setValue(0);
 	ui->b_slider->setValue(0);
-    ui->red_fade_button->setEnabled(false);
-    ui->green_fade_button->setEnabled(false);
-    ui->blue_fade_button->setEnabled(false);
-    ui->speed_button->setEnabled(false);
-    ui->rfrom->setEnabled(false);
-    ui->rto->setEnabled(false);
-    ui->gfrom->setEnabled(false);
-    ui->gto->setEnabled(false);
-    ui->bfrom->setEnabled(false);
-    ui->bto->setEnabled(false);
-    ui->r_speed_slider->setEnabled(false);
-    ui->g_speed_slider->setEnabled(false);
-    ui->b_speed_slider->setEnabled(false);
-    ui->speed_slider->setEnabled(false);
-    ui->r_speed_slider->setValue(0);
-    ui->g_speed_slider->setValue(0);
-    ui->b_speed_slider->setValue(0);
-    ui->speed_slider->setValue(0);
-    ui->rfrom->setValue(0);
-    ui->rto->setValue(0);
-    ui->gfrom->setValue(0);
-    ui->gto->setValue(0);
-    ui->bfrom->setValue(0);
-    ui->bto->setValue(0);
-    presetsfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/presets.txt";
-    tempfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/tmp.file";
+	ui->red_fade_button->setEnabled(false);
+	ui->green_fade_button->setEnabled(false);
+	ui->blue_fade_button->setEnabled(false);
+	ui->speed_button->setEnabled(false);
+	ui->rfrom->setEnabled(false);
+	ui->rto->setEnabled(false);
+	ui->gfrom->setEnabled(false);
+	ui->gto->setEnabled(false);
+	ui->bfrom->setEnabled(false);
+	ui->bto->setEnabled(false);
+	ui->r_speed_slider->setEnabled(false);
+	ui->g_speed_slider->setEnabled(false);
+	ui->b_speed_slider->setEnabled(false);
+	ui->speed_slider->setEnabled(false);
+	ui->r_speed_slider->setValue(0);
+	ui->g_speed_slider->setValue(0);
+	ui->b_speed_slider->setValue(0);
+	ui->speed_slider->setValue(0);
+	ui->rfrom->setValue(100);
+	ui->rto->setValue(255);
+	ui->gfrom->setValue(100);
+	ui->gto->setValue(255);
+	ui->bfrom->setValue(100);
+	ui->bto->setValue(255);
+	presetsfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/presets.txt";
+	tempfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/tmp.file";
 	/* set some crucial ints */
 	preset_index = 0, r = 0, g = 0, b = 0;
 	/* populate our serial port dropdown box */
@@ -111,7 +116,7 @@ void controllerWindow::load_presets()
 	 * -> add [0] to dropdown (name), add [1] to an array that stores all the values
 	 */
 
-    QFile inputFile(presetsfile);
+	QFile inputFile(presetsfile);
 	if (inputFile.open(QIODevice::ReadOnly))
 	{
 		QTextStream in(&inputFile);
@@ -128,7 +133,7 @@ void controllerWindow::load_presets()
 		info_log("Presets loaded");
 	} else
 	{
-        show_msgbox("Unable to load the presets file.\n");
+		show_msgbox("Unable to load the presets file.\n");
 		info_log("Presets file not found.");
 	}
 }
@@ -136,9 +141,9 @@ void controllerWindow::load_presets()
 void controllerWindow::save_preset(QString name)
 {
 	/* this function will save our preset to file */
-    if (!QDir("Folder").exists())
-        QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-    QFile file(presetsfile);
+	if (!QDir("Folder").exists())
+		QDir().mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+	QFile file(presetsfile);
 	if(!file.open(QIODevice::Append)) {
 		show_msgbox("Fatal error opening presets for appending text.");
 
@@ -160,7 +165,7 @@ void controllerWindow::delete_preset(QString name)
 {
 	/*
 	 * here we will delete a preset from the presets file
-     * process:
+	 * process:
 	 * retrieve preset name
 	 * go through preset file line by line and write it to a seperate tmp file
 	 * if the [0] of split('=') equals the preset name, don't write it to the tmp file
@@ -172,8 +177,8 @@ void controllerWindow::delete_preset(QString name)
 	{
 		case QMessageBox::Ok:
 			{
-                info_log("deleting preset: " + name);
-                QFile file(tempfile);
+				info_log("deleting preset: " + name);
+				QFile file(tempfile);
 				if(!file.open(QIODevice::Append)) {
 					show_msgbox("Fatal error opening temp file for writing");
 
@@ -190,8 +195,8 @@ void controllerWindow::delete_preset(QString name)
 					}
 					file.close();
 					/* remove the current presets file then rename the temp file to presets.txt */
-                    QFile::remove(presetsfile);
-                    QFile::rename(tempfile, presetsfile);
+					QFile::remove(presetsfile);
+					QFile::rename(tempfile, presetsfile);
 					/* reload presets into memory and clear the drop down box */
 					ui->presets_dropdown->clear();
 					presets.clear();
@@ -213,8 +218,8 @@ void controllerWindow::delete_preset(QString name)
 
 void controllerWindow::serial_rgb_change(int r, int g, int b)
 {
-    /* un used function */
-	portf.rgb_change(r, g, b);
+	/* un used function */
+	rgb_change(r, g, b);
 }
 
 void controllerWindow::show_msgbox(QString message)
@@ -243,13 +248,14 @@ int controllerWindow::show_question_box(QString message, QString omessage)
 
 void controllerWindow::on_connect_button_clicked()
 {
-    /*
+	/*
 	 * here we need to call our serial port connect function
 	 * if our connection is sucessful we need to enable and disable a few buttons and widgets
 	 * we must also change our rgb sliders etc
 	 */
+	pingtries = 0;
 	port = ui->arduino_port_dropdown->currentText();
-	if (portf.serial_connect(port))
+	if (serial_connect(port))
 	{ // if true we are connected
 		info_log("Connection established");
 		ui->arduino_status_label->setText("<font color=green>Connected</font>");
@@ -271,20 +277,21 @@ void controllerWindow::on_connect_button_clicked()
 		ui->b_slider->setEnabled(true);
 		ui->refresh_port_button->setEnabled(false);
 		ui->arduino_port_dropdown->setEnabled(false);
-        ui->red_fade_button->setEnabled(true);
-        ui->green_fade_button->setEnabled(true);
-        ui->blue_fade_button->setEnabled(true);
-        ui->speed_button->setEnabled(true);
-        ui->rfrom->setEnabled(true);
-        ui->rto->setEnabled(true);
-        ui->gfrom->setEnabled(true);
-        ui->gto->setEnabled(true);
-        ui->bfrom->setEnabled(true);
-        ui->bto->setEnabled(true);
-        ui->r_speed_slider->setEnabled(true);
-        ui->g_speed_slider->setEnabled(true);
-        ui->b_speed_slider->setEnabled(true);
-        ui->speed_slider->setEnabled(true);
+		ui->red_fade_button->setEnabled(true);
+		ui->green_fade_button->setEnabled(true);
+		ui->blue_fade_button->setEnabled(true);
+		ui->speed_button->setEnabled(true);
+		ui->rfrom->setEnabled(true);
+		ui->rto->setEnabled(true);
+		ui->gfrom->setEnabled(true);
+		ui->gto->setEnabled(true);
+		ui->bfrom->setEnabled(true);
+		ui->bto->setEnabled(true);
+		ui->r_speed_slider->setEnabled(true);
+		ui->g_speed_slider->setEnabled(true);
+		ui->b_speed_slider->setEnabled(true);
+		ui->speed_slider->setEnabled(true);
+		ptimer->start(60000);
 	} else
 	{
 		info_log("Unable to connect (port in use?)");
@@ -298,7 +305,7 @@ void controllerWindow::on_disconnect_button_clicked()
 	 * here we will attempt to disconnect from our serial port
 	 * we will also enable/disable some buttons and widgets and set slider values to 0
 	 */
-	if (portf.serial_disconnect())
+	if (serial_disconnect())
 	{
 		info_log("Disconnected from serial port");
 		ui->arduino_status_label->setText("<font color=red>Disconnected</font>");
@@ -322,30 +329,30 @@ void controllerWindow::on_disconnect_button_clicked()
 		ui->r_slider->setValue(0);
 		ui->g_slider->setValue(0);
 		ui->b_slider->setValue(0);
-        ui->red_fade_button->setEnabled(false);
-        ui->green_fade_button->setEnabled(false);
-        ui->blue_fade_button->setEnabled(false);
-        ui->speed_button->setEnabled(false);
-        ui->rfrom->setEnabled(false);
-        ui->rto->setEnabled(false);
-        ui->gfrom->setEnabled(false);
-        ui->gto->setEnabled(false);
-        ui->bfrom->setEnabled(false);
-        ui->bto->setEnabled(false);
-        ui->r_speed_slider->setEnabled(false);
-        ui->g_speed_slider->setEnabled(false);
-        ui->b_speed_slider->setEnabled(false);
-        ui->speed_slider->setEnabled(false);
-        ui->r_speed_slider->setValue(0);
-        ui->g_speed_slider->setValue(0);
-        ui->b_speed_slider->setValue(0);
-        ui->speed_slider->setValue(0);
-        ui->rfrom->setValue(0);
-        ui->rto->setValue(0);
-        ui->gfrom->setValue(0);
-        ui->gto->setValue(0);
-        ui->bfrom->setValue(0);
-        ui->bto->setValue(0);
+		ui->red_fade_button->setEnabled(false);
+		ui->green_fade_button->setEnabled(false);
+		ui->blue_fade_button->setEnabled(false);
+		ui->speed_button->setEnabled(false);
+		ui->rfrom->setEnabled(false);
+		ui->rto->setEnabled(false);
+		ui->gfrom->setEnabled(false);
+		ui->gto->setEnabled(false);
+		ui->bfrom->setEnabled(false);
+		ui->bto->setEnabled(false);
+		ui->r_speed_slider->setEnabled(false);
+		ui->g_speed_slider->setEnabled(false);
+		ui->b_speed_slider->setEnabled(false);
+		ui->speed_slider->setEnabled(false);
+		ui->r_speed_slider->setValue(0);
+		ui->g_speed_slider->setValue(0);
+		ui->b_speed_slider->setValue(0);
+		ui->speed_slider->setValue(0);
+		ui->rfrom->setValue(100);
+		ui->rto->setValue(255);
+		ui->gfrom->setValue(100);
+		ui->gto->setValue(255);
+		ui->bfrom->setValue(100);
+		ui->bto->setValue(255);
 	} else
 	{
 		/* I have no clue how we'd get here */
@@ -369,22 +376,22 @@ void controllerWindow::on_reload_preset_button_clicked()
 void controllerWindow::on_r_slider_valueChanged(int value)
 {
 	r = value;
-    //serial_rgb_change(r, g, b);
-    portf.send("red=" + QString::number(r));
+	//serial_rgb_change(r, g, b);
+	send("red=" + QString::number(r));
 }
 
 void controllerWindow::on_g_slider_valueChanged(int value)
 {
 	g = value;
-    //serial_rgb_change(r, g, b);
-    portf.send("green=" + QString::number(g));
+	//serial_rgb_change(r, g, b);
+	send("green=" + QString::number(g));
 }
 
 void controllerWindow::on_b_slider_valueChanged(int value)
 {
 	b = value;
-    //serial_rgb_change(r, g, b);
-    portf.send("blue=" + QString::number(b));
+	//serial_rgb_change(r, g, b);
+	send("blue=" + QString::number(b));
 }
 
 void controllerWindow::on_red_button_clicked()
@@ -410,9 +417,9 @@ void controllerWindow::on_blue_button_clicked()
 
 void controllerWindow::on_off_button_clicked()
 {
-    ui->r_slider->setValue(1);
-    ui->g_slider->setValue(1);
-    ui->b_slider->setValue(1);
+	ui->r_slider->setValue(1);
+	ui->g_slider->setValue(1);
+	ui->b_slider->setValue(1);
 	ui->r_slider->setValue(0);
 	ui->g_slider->setValue(0);
 	ui->b_slider->setValue(0);
@@ -460,68 +467,186 @@ void controllerWindow::on_preset_delete_button_clicked()
 
 void controllerWindow::on_red_fade_button_clicked()
 {
-    portf.send("redfade");
+	send("redfade");
 }
 
 void controllerWindow::on_green_fade_button_clicked()
 {
-    portf.send("greenfade");
+	send("greenfade");
 }
 
 void controllerWindow::on_blue_fade_button_clicked()
 {
-    portf.send("bluefade");
+	send("bluefade");
 }
 
 void controllerWindow::on_speed_button_clicked()
 {
-    portf.send("speed=" + QString::number(ui->speed_slider->value()));
+	send("speed=" + QString::number(ui->speed_slider->value()));
 }
 
 void controllerWindow::on_r_speed_slider_valueChanged(int value)
 {
-    portf.send("rspeed=" + QString::number(value));
+	send("rspeed=" + QString::number(value));
 }
 
 void controllerWindow::on_g_speed_slider_valueChanged(int value)
 {
-    portf.send("gspeed=" + QString::number(value));
+	send("gspeed=" + QString::number(value));
 }
 
 void controllerWindow::on_b_speed_slider_valueChanged(int value)
 {
-    portf.send("bspeed=" + QString::number(value));
+	send("bspeed=" + QString::number(value));
 }
 
 void controllerWindow::on_rfrom_valueChanged(int arg1)
 {
-    portf.send("rf=" + QString::number(arg1));
-    ui->r_slider->setValue(arg1);
+	send("rf=" + QString::number(arg1));
+	//ui->r_slider->setValue(arg1);
 }
 
 void controllerWindow::on_rto_valueChanged(int arg1)
 {
-    portf.send("rt=" + QString::number(arg1));
+	send("rt=" + QString::number(arg1));
 }
 
 void controllerWindow::on_gfrom_valueChanged(int arg1)
 {
-    portf.send("gf=" + QString::number(arg1));
-    ui->g_slider->setValue(arg1);
+	send("gf=" + QString::number(arg1));
+	//ui->g_slider->setValue(arg1);
 }
 
 void controllerWindow::on_gto_valueChanged(int arg1)
 {
-portf.send("gt=" + QString::number(arg1));
+	send("gt=" + QString::number(arg1));
 }
 
 void controllerWindow::on_bfrom_valueChanged(int arg1)
 {
-    portf.send("bf=" + QString::number(arg1));
-    ui->b_slider->setValue(arg1);
+	send("bf=" + QString::number(arg1));
+	//ui->b_slider->setValue(arg1);
 }
 
 void controllerWindow::on_bto_valueChanged(int arg1)
 {
-    portf.send("bt=" + QString::number(arg1));
+	send("bt=" + QString::number(arg1));
+}
+
+bool controllerWindow::serial_connect(QString port)
+{
+	/* this function will attempt a ser.connection if we are not already connected */
+	if (!ser->isOpen())
+	{
+		ser->setPortName(port);
+		ser->setBaudRate(QSerialPort::Baud9600);
+		ser->setDataBits(QSerialPort::Data8);
+		ser->setParity(QSerialPort::NoParity);
+		ser->setStopBits(QSerialPort::OneStop);
+		ser->setFlowControl(QSerialPort::NoFlowControl);
+		ser->open(QIODevice::ReadWrite);
+		ser->waitForBytesWritten(9000);
+		if (ser->isWritable()) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool controllerWindow::serial_disconnect()
+{
+	/* this function disconnects from the serial port if it is connected already */
+	if (ser->isOpen())
+	{
+		ser->close();
+		ptimer->stop();
+		return true;
+	}
+	return false;
+}
+
+void controllerWindow::send(QString com)
+{
+    data = "";
+    //qDebug() << com;
+    data.append(com + "\n");
+    if (ser->isOpen())
+        ser->write(data);
+}
+
+void controllerWindow::rgb_change(int r, int g, int b)
+{
+    // NOT USED FUNCTION
+
+	/* here we send our rgb values to the serial port */
+	data = "";
+	/* the 0 is a hack, i need to look into it at some point */
+    data.append("red=" + QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "\n");
+	if (ser->isOpen())
+		ser->write(data);
+}
+
+void controllerWindow::read()
+{
+	if (serdata[serdata.size() - 1] == '\n')
+	{
+		parse(QString(serdata));
+		serdata = "";
+	}
+	else
+		serdata = serdata + ser->readAll();
+}
+
+void controllerWindow::parse(QString message)
+{
+	qDebug() << message;
+	if (message.contains("="))
+	{
+		QString command = message.split("=")[0].remove(QRegExp("[\\n\\t\\r]"));
+		QString text = message.split("=")[1].remove(QRegExp("[\\n\\t\\r]"));
+		if (command == "msgbox")
+			show_msgbox(text);
+		if (command == "ping")
+		{
+			qDebug() << "pong from arduino";
+			tping = true;
+		}
+	}
+}
+
+void controllerWindow::on_serial_send_button_clicked()
+{
+	send(ui->serial_input->text()); 
+}
+// timer after ping send, if the timer timeout()'s, disconnect, claim no connection
+void controllerWindow::ping()
+{
+	qDebug() << "sending ping";
+	send("ping\n");
+	tping = false;
+	QTimer::singleShot(1000, this, SLOT(check_ping()));
+}
+
+void controllerWindow::check_ping()
+{
+	if (tping)
+	{
+		qDebug() << "connection fine";
+		tping = false;
+		pingtries = 0;
+	}
+	else
+	{
+		if (pingtries >= 3)
+		{
+			qDebug() << "connection lost";
+			on_disconnect_button_clicked();
+			show_msgbox("Disconnected from Arduino.\nNo ping response after 3 tries.");
+		} 
+		else
+		{
+			pingtries++;
+			qDebug() << "no ping response try" << pingtries;
+		}
+	}
 }

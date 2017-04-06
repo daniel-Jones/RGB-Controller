@@ -15,11 +15,13 @@ class serial_communication
 		bool serial_connect(QString port);
 		bool serial_disconnect();
 		void rgb_change(int r, int g, int b);
-        void send(QString com);
+	        void send(QString com);
 		/* variables */
 		QString port_name;
 		QSerialPort serial;
 		QByteArray data;
+	private slots:
+		void read();
 };
 
 #endif // SERIAL_COMMUNICATION_H

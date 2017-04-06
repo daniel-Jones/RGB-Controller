@@ -37,8 +37,8 @@ public:
     QPushButton *preset_delete_button;
     QLabel *presets_label;
     QPushButton *disconnect_button;
-    QLabel *arduino_status_label;
     QComboBox *arduino_port_dropdown;
+    QLabel *arduino_status_label;
     QSlider *b_slider;
     QSlider *b_speed_slider;
     QTextEdit *info_log_textarea;
@@ -78,13 +78,15 @@ public:
     QLabel *b_speed_label;
     QPushButton *speed_button;
     QSlider *speed_slider;
+    QPushButton *serial_send_button;
+    QLineEdit *serial_input;
 
     void setupUi(QMainWindow *controllerWindow)
     {
         if (controllerWindow->objectName().isEmpty())
             controllerWindow->setObjectName(QStringLiteral("controllerWindow"));
         controllerWindow->setWindowModality(Qt::WindowModal);
-        controllerWindow->resize(232, 629);
+        controllerWindow->resize(238, 629);
         centralWidget = new QWidget(controllerWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout_2 = new QGridLayout(centralWidget);
@@ -116,15 +118,15 @@ public:
 
         gridLayout_2->addWidget(disconnect_button, 3, 1, 1, 1);
 
-        arduino_status_label = new QLabel(centralWidget);
-        arduino_status_label->setObjectName(QStringLiteral("arduino_status_label"));
-
-        gridLayout_2->addWidget(arduino_status_label, 0, 1, 1, 1);
-
         arduino_port_dropdown = new QComboBox(centralWidget);
         arduino_port_dropdown->setObjectName(QStringLiteral("arduino_port_dropdown"));
 
         gridLayout_2->addWidget(arduino_port_dropdown, 1, 1, 1, 1);
+
+        arduino_status_label = new QLabel(centralWidget);
+        arduino_status_label->setObjectName(QStringLiteral("arduino_status_label"));
+
+        gridLayout_2->addWidget(arduino_status_label, 0, 1, 1, 1);
 
         b_slider = new QSlider(centralWidget);
         b_slider->setObjectName(QStringLiteral("b_slider"));
@@ -354,6 +356,16 @@ public:
 
         gridLayout_2->addWidget(speed_slider, 18, 0, 1, 1);
 
+        serial_send_button = new QPushButton(centralWidget);
+        serial_send_button->setObjectName(QStringLiteral("serial_send_button"));
+
+        gridLayout_2->addWidget(serial_send_button, 21, 1, 1, 1);
+
+        serial_input = new QLineEdit(centralWidget);
+        serial_input->setObjectName(QStringLiteral("serial_input"));
+
+        gridLayout_2->addWidget(serial_input, 21, 0, 1, 1);
+
         controllerWindow->setCentralWidget(centralWidget);
 
         retranslateUi(controllerWindow);
@@ -392,6 +404,7 @@ public:
         arduino_port_label->setText(QApplication::translate("controllerWindow", "Arduino port", Q_NULLPTR));
         b_speed_label->setText(QApplication::translate("controllerWindow", "Blue speed", Q_NULLPTR));
         speed_button->setText(QApplication::translate("controllerWindow", "Speed", Q_NULLPTR));
+        serial_send_button->setText(QApplication::translate("controllerWindow", "Send", Q_NULLPTR));
     } // retranslateUi
 
 };
