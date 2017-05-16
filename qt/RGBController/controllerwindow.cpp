@@ -1,4 +1,4 @@
-#include "controllerwindow.h"
+#include "controllerwindow.h" 
 
 controllerWindow::controllerWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -12,7 +12,9 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	connect(ser, &QSerialPort::readyRead, this, &controllerWindow::read);
 	ptimer = new QTimer(this);
 	connect(ptimer, SIGNAL(timeout()), this, SLOT(ping()));
+	connect (&ircbot, SIGNAL(sendcmd(QString)), this, SLOT(cmdrecv(QString)));
 	pingtries = 0;
+	irccon = false;
 	/* disable buttons and widgets that should not be enabled yet, set slider values to 0 */
 	ui->disconnect_button->setEnabled(false);
 	ui->connect_button->setEnabled(false);
@@ -50,12 +52,6 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	ui->g_speed_slider->setValue(0);
 	ui->b_speed_slider->setValue(0);
 	ui->speed_slider->setValue(0);
-	ui->rfrom->setValue(100);
-	ui->rto->setValue(255);
-	ui->gfrom->setValue(100);
-	ui->gto->setValue(255);
-	ui->bfrom->setValue(100);
-	ui->bto->setValue(255);
 	presetsfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/presets.txt";
 	tempfile = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/tmp.file";
 	/* set some crucial ints */
@@ -347,12 +343,6 @@ void controllerWindow::on_disconnect_button_clicked()
 		ui->g_speed_slider->setValue(0);
 		ui->b_speed_slider->setValue(0);
 		ui->speed_slider->setValue(0);
-		ui->rfrom->setValue(100);
-		ui->rto->setValue(255);
-		ui->gfrom->setValue(100);
-		ui->gto->setValue(255);
-		ui->bfrom->setValue(100);
-		ui->bto->setValue(255);
 	} else
 	{
 		/* I have no clue how we'd get here */
@@ -546,7 +536,8 @@ bool controllerWindow::serial_connect(QString port)
 		ser->setFlowControl(QSerialPort::NoFlowControl);
 		ser->open(QIODevice::ReadWrite);
 		ser->waitForBytesWritten(9000);
-		if (ser->isWritable()) {
+		if (ser->isWritable())
+		{
 			return true;
 		}
 	}
@@ -567,21 +558,21 @@ bool controllerWindow::serial_disconnect()
 
 void controllerWindow::send(QString com)
 {
-    data = "";
-    //qDebug() << com;
-    data.append(com + "\n");
-    if (ser->isOpen())
-        ser->write(data);
+	data = "";
+	qDebug() << "sending" << com;
+	data.append(com + "\n");
+	if (ser->isOpen())
+		ser->write(data);
 }
 
 void controllerWindow::rgb_change(int r, int g, int b)
 {
-    // NOT USED FUNCTION
+	// NOT USED FUNCTION
 
 	/* here we send our rgb values to the serial port */
 	data = "";
 	/* the 0 is a hack, i need to look into it at some point */
-    data.append("red=" + QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "\n");
+	data.append("red=" + QString::number(r) + "," + QString::number(g) + "," + QString::number(b) + "\n");
 	if (ser->isOpen())
 		ser->write(data);
 }
@@ -649,4 +640,27 @@ void controllerWindow::check_ping()
 			qDebug() << "no ping response try" << pingtries;
 		}
 	}
+}
+
+void controllerWindow::on_irc_connect_button_clicked()
+{
+	if (irccon == false)
+	{
+		irccon = true;
+		ircbot.setup(ui->irc_server_input->text(), ui->irc_bot_spinbox->value(), ui->irc_channel_input->text(), ui->irc_name_input->text());
+		ui->irc_connect_button->setText("Disconnect");
+	}
+	else
+	{
+		irccon = false;
+		ircbot.discon();
+		ui->irc_connect_button->setText("Connect");
+	}
+}
+
+void controllerWindow::cmdrecv(QString cmd)
+{
+	qDebug() << "got cmd" << cmd;
+	send(cmd);
+
 }

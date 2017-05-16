@@ -49,10 +49,14 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = main.cpp \
-		controllerwindow.cpp moc_controllerwindow.cpp
+		controllerwindow.cpp \
+		irc.cpp moc_controllerwindow.cpp \
+		moc_irc.cpp
 OBJECTS       = main.o \
 		controllerwindow.o \
-		moc_controllerwindow.o
+		irc.o \
+		moc_controllerwindow.o \
+		moc_irc.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -276,8 +280,10 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
-		RGBController.pro controllerwindow.h main.cpp \
-		controllerwindow.cpp
+		RGBController.pro controllerwindow.h \
+		irc.h main.cpp \
+		controllerwindow.cpp \
+		irc.cpp
 QMAKE_TARGET  = RGBController
 DESTDIR       = 
 TARGET        = RGBController
@@ -763,8 +769,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents controllerwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp controllerwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents controllerwindow.h irc.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp controllerwindow.cpp irc.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents controllerwindow.ui $(DISTDIR)/
 
 
@@ -797,14 +803,19 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong -Wall -W -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_controllerwindow.cpp
+compiler_moc_header_make_all: moc_controllerwindow.cpp moc_irc.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_controllerwindow.cpp
+	-$(DEL_FILE) moc_controllerwindow.cpp moc_irc.cpp
 moc_controllerwindow.cpp: ui_controllerwindow.h \
 		controllerwindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I'/home/daniel_j/documents/school/2016 research project/RGBController/qt/RGBController' -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtSerialPort -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed -I/usr/include controllerwindow.h -o moc_controllerwindow.cpp
+
+moc_irc.cpp: irc.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I'/home/daniel_j/documents/school/2016 research project/RGBController/qt/RGBController' -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtSerialPort -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed -I/usr/include irc.h -o moc_irc.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -833,8 +844,14 @@ controllerwindow.o: controllerwindow.cpp controllerwindow.h \
 		ui_controllerwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controllerwindow.o controllerwindow.cpp
 
+irc.o: irc.cpp irc.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o irc.o irc.cpp
+
 moc_controllerwindow.o: moc_controllerwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_controllerwindow.o moc_controllerwindow.cpp
+
+moc_irc.o: moc_irc.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_irc.o moc_irc.cpp
 
 ####### Install
 

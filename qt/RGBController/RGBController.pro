@@ -13,9 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        controllerwindow.cpp
+        controllerwindow.cpp \
+    irc.cpp
 
 
-HEADERS  += controllerwindow.h
+HEADERS  += controllerwindow.h \
+    irc.h
 
 FORMS    += controllerwindow.ui
