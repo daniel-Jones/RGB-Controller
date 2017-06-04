@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_controllerWindow_t {
-    QByteArrayData data[33];
-    char stringdata0[777];
+    QByteArrayData data[40];
+    char stringdata0[896];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,42 +32,50 @@ struct qt_meta_stringdata_controllerWindow_t {
 static const qt_meta_stringdata_controllerWindow_t qt_meta_stringdata_controllerWindow = {
     {
 QT_MOC_LITERAL(0, 0, 16), // "controllerWindow"
-QT_MOC_LITERAL(1, 17, 25), // "on_connect_button_clicked"
-QT_MOC_LITERAL(2, 43, 0), // ""
-QT_MOC_LITERAL(3, 44, 28), // "on_disconnect_button_clicked"
-QT_MOC_LITERAL(4, 73, 30), // "on_refresh_port_button_clicked"
-QT_MOC_LITERAL(5, 104, 31), // "on_reload_preset_button_clicked"
-QT_MOC_LITERAL(6, 136, 24), // "on_r_slider_valueChanged"
-QT_MOC_LITERAL(7, 161, 5), // "value"
-QT_MOC_LITERAL(8, 167, 24), // "on_g_slider_valueChanged"
-QT_MOC_LITERAL(9, 192, 24), // "on_b_slider_valueChanged"
-QT_MOC_LITERAL(10, 217, 21), // "on_red_button_clicked"
-QT_MOC_LITERAL(11, 239, 23), // "on_green_button_clicked"
-QT_MOC_LITERAL(12, 263, 22), // "on_blue_button_clicked"
-QT_MOC_LITERAL(13, 286, 21), // "on_off_button_clicked"
-QT_MOC_LITERAL(14, 308, 28), // "on_set_preset_button_clicked"
-QT_MOC_LITERAL(15, 337, 39), // "on_presets_dropdown_currentIn..."
-QT_MOC_LITERAL(16, 377, 5), // "index"
-QT_MOC_LITERAL(17, 383, 29), // "on_preset_save_button_clicked"
-QT_MOC_LITERAL(18, 413, 31), // "on_preset_delete_button_clicked"
-QT_MOC_LITERAL(19, 445, 26), // "on_red_fade_button_clicked"
-QT_MOC_LITERAL(20, 472, 28), // "on_green_fade_button_clicked"
-QT_MOC_LITERAL(21, 501, 27), // "on_blue_fade_button_clicked"
-QT_MOC_LITERAL(22, 529, 23), // "on_speed_button_clicked"
-QT_MOC_LITERAL(23, 553, 30), // "on_r_speed_slider_valueChanged"
-QT_MOC_LITERAL(24, 584, 30), // "on_g_speed_slider_valueChanged"
-QT_MOC_LITERAL(25, 615, 30), // "on_b_speed_slider_valueChanged"
-QT_MOC_LITERAL(26, 646, 21), // "on_rfrom_valueChanged"
-QT_MOC_LITERAL(27, 668, 4), // "arg1"
-QT_MOC_LITERAL(28, 673, 19), // "on_rto_valueChanged"
-QT_MOC_LITERAL(29, 693, 21), // "on_gfrom_valueChanged"
-QT_MOC_LITERAL(30, 715, 19), // "on_gto_valueChanged"
-QT_MOC_LITERAL(31, 735, 21), // "on_bfrom_valueChanged"
-QT_MOC_LITERAL(32, 757, 19) // "on_bto_valueChanged"
+QT_MOC_LITERAL(1, 17, 7), // "cmdrecv"
+QT_MOC_LITERAL(2, 25, 0), // ""
+QT_MOC_LITERAL(3, 26, 3), // "cmd"
+QT_MOC_LITERAL(4, 30, 25), // "on_connect_button_clicked"
+QT_MOC_LITERAL(5, 56, 28), // "on_disconnect_button_clicked"
+QT_MOC_LITERAL(6, 85, 30), // "on_refresh_port_button_clicked"
+QT_MOC_LITERAL(7, 116, 31), // "on_reload_preset_button_clicked"
+QT_MOC_LITERAL(8, 148, 24), // "on_r_slider_valueChanged"
+QT_MOC_LITERAL(9, 173, 5), // "value"
+QT_MOC_LITERAL(10, 179, 24), // "on_g_slider_valueChanged"
+QT_MOC_LITERAL(11, 204, 24), // "on_b_slider_valueChanged"
+QT_MOC_LITERAL(12, 229, 21), // "on_red_button_clicked"
+QT_MOC_LITERAL(13, 251, 23), // "on_green_button_clicked"
+QT_MOC_LITERAL(14, 275, 22), // "on_blue_button_clicked"
+QT_MOC_LITERAL(15, 298, 21), // "on_off_button_clicked"
+QT_MOC_LITERAL(16, 320, 28), // "on_set_preset_button_clicked"
+QT_MOC_LITERAL(17, 349, 39), // "on_presets_dropdown_currentIn..."
+QT_MOC_LITERAL(18, 389, 5), // "index"
+QT_MOC_LITERAL(19, 395, 29), // "on_preset_save_button_clicked"
+QT_MOC_LITERAL(20, 425, 31), // "on_preset_delete_button_clicked"
+QT_MOC_LITERAL(21, 457, 26), // "on_red_fade_button_clicked"
+QT_MOC_LITERAL(22, 484, 28), // "on_green_fade_button_clicked"
+QT_MOC_LITERAL(23, 513, 27), // "on_blue_fade_button_clicked"
+QT_MOC_LITERAL(24, 541, 23), // "on_speed_button_clicked"
+QT_MOC_LITERAL(25, 565, 30), // "on_r_speed_slider_valueChanged"
+QT_MOC_LITERAL(26, 596, 30), // "on_g_speed_slider_valueChanged"
+QT_MOC_LITERAL(27, 627, 30), // "on_b_speed_slider_valueChanged"
+QT_MOC_LITERAL(28, 658, 21), // "on_rfrom_valueChanged"
+QT_MOC_LITERAL(29, 680, 4), // "arg1"
+QT_MOC_LITERAL(30, 685, 19), // "on_rto_valueChanged"
+QT_MOC_LITERAL(31, 705, 21), // "on_gfrom_valueChanged"
+QT_MOC_LITERAL(32, 727, 19), // "on_gto_valueChanged"
+QT_MOC_LITERAL(33, 747, 21), // "on_bfrom_valueChanged"
+QT_MOC_LITERAL(34, 769, 19), // "on_bto_valueChanged"
+QT_MOC_LITERAL(35, 789, 29), // "on_serial_send_button_clicked"
+QT_MOC_LITERAL(36, 819, 4), // "ping"
+QT_MOC_LITERAL(37, 824, 10), // "check_ping"
+QT_MOC_LITERAL(38, 835, 29), // "on_irc_connect_button_clicked"
+QT_MOC_LITERAL(39, 865, 30) // "on_server_start_button_clicked"
 
     },
-    "controllerWindow\0on_connect_button_clicked\0"
-    "\0on_disconnect_button_clicked\0"
+    "controllerWindow\0cmdrecv\0\0cmd\0"
+    "on_connect_button_clicked\0"
+    "on_disconnect_button_clicked\0"
     "on_refresh_port_button_clicked\0"
     "on_reload_preset_button_clicked\0"
     "on_r_slider_valueChanged\0value\0"
@@ -89,7 +97,9 @@ QT_MOC_LITERAL(32, 757, 19) // "on_bto_valueChanged"
     "on_rfrom_valueChanged\0arg1\0"
     "on_rto_valueChanged\0on_gfrom_valueChanged\0"
     "on_gto_valueChanged\0on_bfrom_valueChanged\0"
-    "on_bto_valueChanged"
+    "on_bto_valueChanged\0on_serial_send_button_clicked\0"
+    "ping\0check_ping\0on_irc_connect_button_clicked\0"
+    "on_server_start_button_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -99,7 +109,7 @@ static const uint qt_meta_data_controllerWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      28,   14, // methods
+      34,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -107,64 +117,76 @@ static const uint qt_meta_data_controllerWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  154,    2, 0x08 /* Private */,
-       3,    0,  155,    2, 0x08 /* Private */,
-       4,    0,  156,    2, 0x08 /* Private */,
-       5,    0,  157,    2, 0x08 /* Private */,
-       6,    1,  158,    2, 0x08 /* Private */,
-       8,    1,  161,    2, 0x08 /* Private */,
-       9,    1,  164,    2, 0x08 /* Private */,
-      10,    0,  167,    2, 0x08 /* Private */,
-      11,    0,  168,    2, 0x08 /* Private */,
-      12,    0,  169,    2, 0x08 /* Private */,
-      13,    0,  170,    2, 0x08 /* Private */,
-      14,    0,  171,    2, 0x08 /* Private */,
-      15,    1,  172,    2, 0x08 /* Private */,
-      17,    0,  175,    2, 0x08 /* Private */,
-      18,    0,  176,    2, 0x08 /* Private */,
-      19,    0,  177,    2, 0x08 /* Private */,
-      20,    0,  178,    2, 0x08 /* Private */,
-      21,    0,  179,    2, 0x08 /* Private */,
-      22,    0,  180,    2, 0x08 /* Private */,
-      23,    1,  181,    2, 0x08 /* Private */,
-      24,    1,  184,    2, 0x08 /* Private */,
-      25,    1,  187,    2, 0x08 /* Private */,
-      26,    1,  190,    2, 0x08 /* Private */,
-      28,    1,  193,    2, 0x08 /* Private */,
-      29,    1,  196,    2, 0x08 /* Private */,
-      30,    1,  199,    2, 0x08 /* Private */,
-      31,    1,  202,    2, 0x08 /* Private */,
-      32,    1,  205,    2, 0x08 /* Private */,
+       1,    1,  184,    2, 0x0a /* Public */,
+       4,    0,  187,    2, 0x08 /* Private */,
+       5,    0,  188,    2, 0x08 /* Private */,
+       6,    0,  189,    2, 0x08 /* Private */,
+       7,    0,  190,    2, 0x08 /* Private */,
+       8,    1,  191,    2, 0x08 /* Private */,
+      10,    1,  194,    2, 0x08 /* Private */,
+      11,    1,  197,    2, 0x08 /* Private */,
+      12,    0,  200,    2, 0x08 /* Private */,
+      13,    0,  201,    2, 0x08 /* Private */,
+      14,    0,  202,    2, 0x08 /* Private */,
+      15,    0,  203,    2, 0x08 /* Private */,
+      16,    0,  204,    2, 0x08 /* Private */,
+      17,    1,  205,    2, 0x08 /* Private */,
+      19,    0,  208,    2, 0x08 /* Private */,
+      20,    0,  209,    2, 0x08 /* Private */,
+      21,    0,  210,    2, 0x08 /* Private */,
+      22,    0,  211,    2, 0x08 /* Private */,
+      23,    0,  212,    2, 0x08 /* Private */,
+      24,    0,  213,    2, 0x08 /* Private */,
+      25,    1,  214,    2, 0x08 /* Private */,
+      26,    1,  217,    2, 0x08 /* Private */,
+      27,    1,  220,    2, 0x08 /* Private */,
+      28,    1,  223,    2, 0x08 /* Private */,
+      30,    1,  226,    2, 0x08 /* Private */,
+      31,    1,  229,    2, 0x08 /* Private */,
+      32,    1,  232,    2, 0x08 /* Private */,
+      33,    1,  235,    2, 0x08 /* Private */,
+      34,    1,  238,    2, 0x08 /* Private */,
+      35,    0,  241,    2, 0x08 /* Private */,
+      36,    0,  242,    2, 0x08 /* Private */,
+      37,    0,  243,    2, 0x08 /* Private */,
+      38,    0,  244,    2, 0x08 /* Private */,
+      39,    0,  245,    2, 0x08 /* Private */,
 
  // slots: parameters
+    QMetaType::Void, QMetaType::QString,    3,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   16,
+    QMetaType::Void, QMetaType::Int,    9,
+    QMetaType::Void, QMetaType::Int,    9,
+    QMetaType::Void, QMetaType::Int,    9,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   18,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::Int,   27,
-    QMetaType::Void, QMetaType::Int,   27,
-    QMetaType::Void, QMetaType::Int,   27,
-    QMetaType::Void, QMetaType::Int,   27,
-    QMetaType::Void, QMetaType::Int,   27,
-    QMetaType::Void, QMetaType::Int,   27,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    9,
+    QMetaType::Void, QMetaType::Int,    9,
+    QMetaType::Void, QMetaType::Int,    9,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -175,34 +197,40 @@ void controllerWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         controllerWindow *_t = static_cast<controllerWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->on_connect_button_clicked(); break;
-        case 1: _t->on_disconnect_button_clicked(); break;
-        case 2: _t->on_refresh_port_button_clicked(); break;
-        case 3: _t->on_reload_preset_button_clicked(); break;
-        case 4: _t->on_r_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: _t->on_g_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: _t->on_b_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: _t->on_red_button_clicked(); break;
-        case 8: _t->on_green_button_clicked(); break;
-        case 9: _t->on_blue_button_clicked(); break;
-        case 10: _t->on_off_button_clicked(); break;
-        case 11: _t->on_set_preset_button_clicked(); break;
-        case 12: _t->on_presets_dropdown_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 13: _t->on_preset_save_button_clicked(); break;
-        case 14: _t->on_preset_delete_button_clicked(); break;
-        case 15: _t->on_red_fade_button_clicked(); break;
-        case 16: _t->on_green_fade_button_clicked(); break;
-        case 17: _t->on_blue_fade_button_clicked(); break;
-        case 18: _t->on_speed_button_clicked(); break;
-        case 19: _t->on_r_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 20: _t->on_g_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 21: _t->on_b_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 22: _t->on_rfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 23: _t->on_rto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 24: _t->on_gfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 25: _t->on_gto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 26: _t->on_bfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 27: _t->on_bto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 0: _t->cmdrecv((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 1: _t->on_connect_button_clicked(); break;
+        case 2: _t->on_disconnect_button_clicked(); break;
+        case 3: _t->on_refresh_port_button_clicked(); break;
+        case 4: _t->on_reload_preset_button_clicked(); break;
+        case 5: _t->on_r_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: _t->on_g_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->on_b_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: _t->on_red_button_clicked(); break;
+        case 9: _t->on_green_button_clicked(); break;
+        case 10: _t->on_blue_button_clicked(); break;
+        case 11: _t->on_off_button_clicked(); break;
+        case 12: _t->on_set_preset_button_clicked(); break;
+        case 13: _t->on_presets_dropdown_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 14: _t->on_preset_save_button_clicked(); break;
+        case 15: _t->on_preset_delete_button_clicked(); break;
+        case 16: _t->on_red_fade_button_clicked(); break;
+        case 17: _t->on_green_fade_button_clicked(); break;
+        case 18: _t->on_blue_fade_button_clicked(); break;
+        case 19: _t->on_speed_button_clicked(); break;
+        case 20: _t->on_r_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 21: _t->on_g_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 22: _t->on_b_speed_slider_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 23: _t->on_rfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 24: _t->on_rto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 25: _t->on_gfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 26: _t->on_gto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 27: _t->on_bfrom_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 28: _t->on_bto_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 29: _t->on_serial_send_button_clicked(); break;
+        case 30: _t->ping(); break;
+        case 31: _t->check_ping(); break;
+        case 32: _t->on_irc_connect_button_clicked(); break;
+        case 33: _t->on_server_start_button_clicked(); break;
         default: ;
         }
     }
@@ -233,13 +261,13 @@ int controllerWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 28)
+        if (_id < 34)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 28;
+        _id -= 34;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 28)
+        if (_id < 34)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 28;
+        _id -= 34;
     }
     return _id;
 }

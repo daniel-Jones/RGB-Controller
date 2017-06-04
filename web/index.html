@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<title>RGB Controler</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+function hexToRgb(hex) {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+}
+function pick_colour() {
+	var http = new XMLHttpRequest();
+	var url = "sendcmd.php";
+	rgb_o = hexToRgb(document.getElementById("colour").value);
+	var params = "r="+rgb_o.r+"&g="+rgb_o.g+"&b="+rgb_o.b;
+	http.open("GET", url + "?" + params, true);
+	http.send();
+}
+		</script>
+		<form id="colour_picker" onsubmit="pick_colour(); return false;" action="#">
+			<input type="color" name="colour" id="colour" value="#ff0000">
+			<input type="submit">
+		</form>
+	</body>

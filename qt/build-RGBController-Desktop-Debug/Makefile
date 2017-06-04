@@ -49,10 +49,18 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../RGBController/main.cpp \
-		../RGBController/controllerwindow.cpp moc_controllerwindow.cpp
+		../RGBController/controllerwindow.cpp \
+		../RGBController/irc.cpp \
+		../RGBController/server.cpp moc_controllerwindow.cpp \
+		moc_irc.cpp \
+		moc_server.cpp
 OBJECTS       = main.o \
 		controllerwindow.o \
-		moc_controllerwindow.o
+		irc.o \
+		server.o \
+		moc_controllerwindow.o \
+		moc_irc.o \
+		moc_server.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -276,8 +284,12 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
-		../RGBController/RGBController.pro ../RGBController/controllerwindow.h ../RGBController/main.cpp \
-		../RGBController/controllerwindow.cpp
+		../RGBController/RGBController.pro ../RGBController/controllerwindow.h \
+		../RGBController/irc.h \
+		../RGBController/server.h ../RGBController/main.cpp \
+		../RGBController/controllerwindow.cpp \
+		../RGBController/irc.cpp \
+		../RGBController/server.cpp
 QMAKE_TARGET  = RGBController
 DESTDIR       = 
 TARGET        = RGBController
@@ -763,8 +775,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../RGBController/controllerwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../RGBController/main.cpp ../RGBController/controllerwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../RGBController/controllerwindow.h ../RGBController/irc.h ../RGBController/server.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../RGBController/main.cpp ../RGBController/controllerwindow.cpp ../RGBController/irc.cpp ../RGBController/server.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../RGBController/controllerwindow.ui $(DISTDIR)/
 
 
@@ -797,14 +809,26 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -Wall -W -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_controllerwindow.cpp
+compiler_moc_header_make_all: moc_controllerwindow.cpp moc_irc.cpp moc_server.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_controllerwindow.cpp
+	-$(DEL_FILE) moc_controllerwindow.cpp moc_irc.cpp moc_server.cpp
 moc_controllerwindow.cpp: ../RGBController/ui_controllerwindow.h \
+		../RGBController/irc.h \
+		../RGBController/server.h \
 		../RGBController/controllerwindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I'/home/daniel_j/documents/school/2016 research project/RGBController/qt/RGBController' -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtSerialPort -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed -I/usr/include ../RGBController/controllerwindow.h -o moc_controllerwindow.cpp
+
+moc_irc.cpp: ../RGBController/irc.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I'/home/daniel_j/documents/school/2016 research project/RGBController/qt/RGBController' -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtSerialPort -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed -I/usr/include ../RGBController/irc.h -o moc_irc.cpp
+
+moc_server.cpp: ../RGBController/server.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include ./moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I'/home/daniel_j/documents/school/2016 research project/RGBController/qt/RGBController' -I/usr/include/qt -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtSerialPort -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtCore -I. -I/usr/include/c++/6.3.1 -I/usr/include/c++/6.3.1/x86_64-pc-linux-gnu -I/usr/include/c++/6.3.1/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/6.3.1/include-fixed -I/usr/include ../RGBController/server.h -o moc_server.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -826,15 +850,31 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 main.o: ../RGBController/main.cpp ../RGBController/controllerwindow.h \
-		../RGBController/ui_controllerwindow.h
+		../RGBController/ui_controllerwindow.h \
+		../RGBController/irc.h \
+		../RGBController/server.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../RGBController/main.cpp
 
 controllerwindow.o: ../RGBController/controllerwindow.cpp ../RGBController/controllerwindow.h \
-		../RGBController/ui_controllerwindow.h
+		../RGBController/ui_controllerwindow.h \
+		../RGBController/irc.h \
+		../RGBController/server.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controllerwindow.o ../RGBController/controllerwindow.cpp
+
+irc.o: ../RGBController/irc.cpp ../RGBController/irc.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o irc.o ../RGBController/irc.cpp
+
+server.o: ../RGBController/server.cpp ../RGBController/server.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o ../RGBController/server.cpp
 
 moc_controllerwindow.o: moc_controllerwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_controllerwindow.o moc_controllerwindow.cpp
+
+moc_irc.o: moc_irc.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_irc.o moc_irc.cpp
+
+moc_server.o: moc_server.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_server.o moc_server.cpp
 
 ####### Install
 

@@ -12,9 +12,12 @@ controllerWindow::controllerWindow(QWidget *parent) :
 	connect(ser, &QSerialPort::readyRead, this, &controllerWindow::read);
 	ptimer = new QTimer(this);
 	connect(ptimer, SIGNAL(timeout()), this, SLOT(ping()));
-	connect (&ircbot, SIGNAL(sendcmd(QString)), this, SLOT(cmdrecv(QString)));
+	connect(&ircbot, SIGNAL(sendcmd(QString)), this, SLOT(cmdrecv(QString)));
+	connect(&srv, SIGNAL(sendcmd(QString)), this, SLOT(cmdrecv(QString))); 
 	pingtries = 0;
 	irccon = false;
+	pingcount = 0;
+	server_started = false;
 	/* disable buttons and widgets that should not be enabled yet, set slider values to 0 */
 	ui->disconnect_button->setEnabled(false);
 	ui->connect_button->setEnabled(false);
@@ -413,6 +416,7 @@ void controllerWindow::on_off_button_clicked()
 	ui->r_slider->setValue(0);
 	ui->g_slider->setValue(0);
 	ui->b_slider->setValue(0);
+	send("off");
 }
 
 void controllerWindow::on_set_preset_button_clicked()
@@ -616,6 +620,8 @@ void controllerWindow::ping()
 	send("ping\n");
 	tping = false;
 	QTimer::singleShot(1000, this, SLOT(check_ping()));
+	pingcount++;
+	ui->ping_count_label->setText("Ping: " + QString::number(pingcount));
 }
 
 void controllerWindow::check_ping()
@@ -655,6 +661,37 @@ void controllerWindow::on_irc_connect_button_clicked()
 		irccon = false;
 		ircbot.discon();
 		ui->irc_connect_button->setText("Connect");
+	}
+}
+
+void controllerWindow::on_server_start_button_clicked()
+{
+	if (!server_started)
+	{
+		if (srv.server_start())
+		{
+			server_started = true;
+			ui->server_start_button->setText("Stop server");
+			info_log("Server started");
+		}
+		else
+		{
+			info_log("Server could not start");
+		}
+	}
+
+	else if (server_started)
+	{
+		if (srv.server_stop())
+		{
+			server_started = false;
+			ui->server_start_button->setText("Start server");
+			info_log("Server stopped");
+		}
+		else
+		{
+			info_log("Server not not be stopped");
+		}
 	}
 }
 

@@ -33,7 +33,7 @@ void irc::read()
 		buf = "JOIN " + channel + "\r\n";
 		socket->write(buf.toUtf8());
 	}
-	if (line.contains("!")) /* mostl ikely a message to handle */
+	if (line.contains("!")) /* most likely a message to handle */
 		handle(line);
 	if(socket->canReadLine())
 		read();

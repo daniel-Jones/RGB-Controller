@@ -15,6 +15,7 @@
 #include <QTimer>
 #include "ui_controllerwindow.h"
 #include "irc.h"
+#include "server.h"
 
 namespace Ui {
 	class controllerWindow;
@@ -64,7 +65,7 @@ class controllerWindow : public QMainWindow
 			void cmdrecv(QString cmd);
 		private slots:
 			/* these slots are used to trigger button clicks and drop down items selections etc */
-		void on_connect_button_clicked();
+			void on_connect_button_clicked();
 
 		void on_disconnect_button_clicked();
 
@@ -120,16 +121,22 @@ class controllerWindow : public QMainWindow
 
 		void on_bto_valueChanged(int arg1);
 
-	        void on_serial_send_button_clicked();
+		void on_serial_send_button_clicked();
 		void ping();
 		void check_ping();
 
-        void on_irc_connect_button_clicked();
+		void on_irc_connect_button_clicked();
 
-private:
+		void on_server_start_button_clicked();
+
+
+	private:
 		Ui::controllerWindow *ui;
 		bool irccon;
 		irc ircbot;
+		server srv;
+		int pingcount;
+		bool server_started;
 };
 
 #endif // CONTROLLERWINDOW_H
