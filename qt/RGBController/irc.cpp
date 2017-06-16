@@ -2,7 +2,7 @@
 
 irc::irc(QObject *parent) : QObject(parent)
 {
-
+ 
 }
 
 void irc::setup(QString srv, int p, QString c, QString n)
@@ -15,6 +15,8 @@ void irc::setup(QString srv, int p, QString c, QString n)
 	/* setup socket, connect signal/slot */
 	socket = new QTcpSocket(this);
 	connect(socket, SIGNAL(readyRead()), this, SLOT(read()));
+	contest = new QTimer(this);
+	connect(contest, SIGNAL(timeout()), this, SLOT(testcon()));
 	/* connect */
 	con();
 }
@@ -37,7 +39,6 @@ void irc::read()
 		handle(line);
 	if(socket->canReadLine())
 		read();
-
 }
 
 void irc::con()
@@ -47,12 +48,14 @@ void irc::con()
 	socket->write(buf.toUtf8());
 	buf = "USER " + name + " 8 * :" + name + "\r\n";
 	socket->write(buf.toUtf8());
+	contest->start(60000);
 }
 
 void irc::discon()
 {
 	socket->write("QUIT :elegant quit \r\n");
 	socket->close();
+	contest->stop();
 }
 
 void irc::handle(QString str)
@@ -93,4 +96,16 @@ void irc::sendmsg(QString msg)
 {
 	buf = "PRIVMSG " + channel + " :" + msg + " \r\n";
 	socket->write(buf.toUtf8());
+}
+
+void irc::testcon()
+{
+	qDebug() << socket->state();
+	if (socket->state() == QAbstractSocket::UnconnectedState)
+	{
+		qDebug() << "reconnect needed";
+		discon();
+		name = name + "_";
+		con();
+	}
 }

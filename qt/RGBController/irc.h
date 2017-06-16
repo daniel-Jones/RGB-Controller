@@ -3,6 +3,7 @@
 
 #include <QtNetwork/QTcpSocket>
 #include <QDebug>
+#include <QTimer>
 
 class irc : public QObject
 {
@@ -19,10 +20,14 @@ class irc : public QObject
 		QString channel;
 		QString name;
 		QString buf;
+		int pingcount;
+		QTimer *contest;
+
 	private slots:
 		void read();
 		void con();
 		void handle(QString str);
+		void testcon();
 
 	signals:
 		void sendcmd(QString cmd);
