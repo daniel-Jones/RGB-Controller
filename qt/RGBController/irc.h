@@ -20,14 +20,14 @@ class irc : public QObject
 		QString channel;
 		QString name;
 		QString buf;
-		int pingcount;
-		QTimer *contest;
+		bool pinged;
+		QTimer *pingcheck;
 
 	private slots:
 		void read();
 		void con();
 		void handle(QString str);
-		void testcon();
+		void pingcheckfunc();
 
 	signals:
 		void sendcmd(QString cmd);

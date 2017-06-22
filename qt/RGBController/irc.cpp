@@ -15,8 +15,8 @@ void irc::setup(QString srv, int p, QString c, QString n)
 	/* setup socket, connect signal/slot */
 	socket = new QTcpSocket(this);
 	connect(socket, SIGNAL(readyRead()), this, SLOT(read()));
-	contest = new QTimer(this);
-	connect(contest, SIGNAL(timeout()), this, SLOT(testcon()));
+	pingcheck = new QTimer(this);
+	connect(pingcheck, SIGNAL(timeout()), this, SLOT(pingcheckfunc()));
 	/* connect */
 	con();
 }
@@ -26,6 +26,7 @@ void irc::read()
 	QString line = socket->readLine();
 	if (line.contains("PING :"))
 	{
+		pinged = true;
 		QString sline = "PONG :" + line.split(":")[1];
 		socket->write(sline.toLatin1());
 	}
@@ -43,19 +44,20 @@ void irc::read()
 
 void irc::con()
 {
+	pinged = false;
 	socket->connectToHost(server, port);
 	buf = "NICK " + name + "\r\n";
 	socket->write(buf.toUtf8());
 	buf = "USER " + name + " 8 * :" + name + "\r\n";
 	socket->write(buf.toUtf8());
-	contest->start(60000);
+	pingcheck->start(60000);
 }
 
 void irc::discon()
 {
 	socket->write("QUIT :elegant quit \r\n");
 	socket->close();
-	contest->stop();
+	pingcheck->stop();
 }
 
 void irc::handle(QString str)
@@ -80,7 +82,6 @@ void irc::handle(QString str)
 					for (int x = 0; x < tmp.size(); x++)
 					{
 						emit sendcmd(tmp.at(x));
-
 					}
 				}
 				else
@@ -98,14 +99,18 @@ void irc::sendmsg(QString msg)
 	socket->write(buf.toUtf8());
 }
 
-void irc::testcon()
+void irc::pingcheckfunc()
 {
-	qDebug() << socket->state();
-	if (socket->state() == QAbstractSocket::UnconnectedState)
+	if (pinged)
 	{
-		qDebug() << "reconnect needed";
-		discon();
+		qDebug() << "reconnection not needed";
+		pinged = false;
+	}
+	else
+	{
+		qDebug() << "reconnection needed";
 		name = name + "_";
+		discon();
 		con();
 	}
 }
