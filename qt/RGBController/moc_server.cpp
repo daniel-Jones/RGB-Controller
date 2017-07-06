@@ -1,18 +1,18 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'server.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.8.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../RGBController/server.h"
+#include "server.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'server.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.8.0. It"
+#error "This file was generated using the moc from 5.9.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -95,7 +95,7 @@ void server::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
 
 const QMetaObject server::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_server.data,
-      qt_meta_data_server,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+      qt_meta_data_server,  qt_static_metacall, nullptr, nullptr}
 };
 
 
@@ -106,7 +106,7 @@ const QMetaObject *server::metaObject() const
 
 void *server::qt_metacast(const char *_clname)
 {
-    if (!_clname) return Q_NULLPTR;
+    if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_server.stringdata0))
         return static_cast<void*>(const_cast< server*>(this));
     return QObject::qt_metacast(_clname);
@@ -132,7 +132,7 @@ int server::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void server::sendcmd(QString _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_WARNING_POP

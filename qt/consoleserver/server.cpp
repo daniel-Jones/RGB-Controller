@@ -4,12 +4,15 @@ server::server(QObject *parent) : QObject(parent)
 {
 	srv = new QTcpServer();
 	connect(srv, SIGNAL(newConnection()), this, SLOT(new_connection()));
+	qDebug() << "server loaded but not started";
 }
 
 bool server::server_start()
 {
+	qDebug() << "server started";
 	if (srv->listen(QHostAddress::Any, 3001))
 	{
+		qDebug() << "listening on 3001"; 
 		return true;
 	}
 	else
@@ -38,6 +41,7 @@ void server::new_connection()
 
 void server::handle(QString msg)
 {
+	qDebug() << "received" << msg;
 	if (msg.contains(";"))
 	{
 		QStringList tmp = msg.split(";");

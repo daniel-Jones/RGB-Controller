@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'controllerwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.9.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -93,13 +93,13 @@ public:
     QLabel *irc_bot_label;
     QLabel *irc_server_label;
     QLineEdit *irc_server_input;
-    QSpinBox *irc_bot_spinbox;
     QLabel *irc_channel_label;
     QLineEdit *irc_channel_input;
     QLabel *irc_name_label;
     QLineEdit *irc_name_input;
     QLabel *irc_port_label;
     QPushButton *irc_connect_button;
+    QSpinBox *irc_bot_spinbox;
     QWidget *server_tab;
     QGridLayout *gridLayout_6;
     QFormLayout *server_tab_layout;
@@ -116,8 +116,8 @@ public:
     {
         if (controllerWindow->objectName().isEmpty())
             controllerWindow->setObjectName(QStringLiteral("controllerWindow"));
-        controllerWindow->setWindowModality(Qt::WindowModal);
-        controllerWindow->resize(433, 254);
+        controllerWindow->setWindowModality(Qt::NonModal);
+        controllerWindow->resize(449, 298);
         centralWidget = new QWidget(controllerWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayout_2 = new QGridLayout(centralWidget);
@@ -455,14 +455,6 @@ public:
 
         formLayout_5->setWidget(5, QFormLayout::LabelRole, irc_server_input);
 
-        irc_bot_spinbox = new QSpinBox(irc_tab);
-        irc_bot_spinbox->setObjectName(QStringLiteral("irc_bot_spinbox"));
-        irc_bot_spinbox->setMaximumSize(QSize(50, 16777215));
-        irc_bot_spinbox->setMaximum(99999);
-        irc_bot_spinbox->setValue(6667);
-
-        formLayout_5->setWidget(5, QFormLayout::FieldRole, irc_bot_spinbox);
-
         irc_channel_label = new QLabel(irc_tab);
         irc_channel_label->setObjectName(QStringLiteral("irc_channel_label"));
 
@@ -492,6 +484,15 @@ public:
         irc_connect_button->setObjectName(QStringLiteral("irc_connect_button"));
 
         formLayout_5->setWidget(10, QFormLayout::LabelRole, irc_connect_button);
+
+        irc_bot_spinbox = new QSpinBox(irc_tab);
+        irc_bot_spinbox->setObjectName(QStringLiteral("irc_bot_spinbox"));
+        irc_bot_spinbox->setMinimumSize(QSize(60, 0));
+        irc_bot_spinbox->setMaximumSize(QSize(50, 16777215));
+        irc_bot_spinbox->setMaximum(99999);
+        irc_bot_spinbox->setValue(6667);
+
+        formLayout_5->setWidget(5, QFormLayout::FieldRole, irc_bot_spinbox);
 
         display_tab->addTab(irc_tab, QString());
         server_tab = new QWidget();
@@ -551,7 +552,7 @@ public:
 
         retranslateUi(controllerWindow);
 
-        display_tab->setCurrentIndex(5);
+        display_tab->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(controllerWindow);

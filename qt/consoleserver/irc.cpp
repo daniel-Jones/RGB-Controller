@@ -2,16 +2,16 @@
 
 irc::irc(QObject *parent) : QObject(parent)
 {
- 
+	qDebug() << "irc loaded but not started"; 
 }
 
 void irc::setup(QString srv, int p, QString c, QString n)
 {
+	qDebug() << "irc started";
 	server = srv;
 	port = p;
 	channel = c;
 	name = n;
-	qDebug() << "irc::setup()";
 	/* setup socket, connect signal/slot */
 	socket = new QTcpSocket(this);
 	connect(socket, SIGNAL(readyRead()), this, SLOT(read()));
@@ -75,7 +75,6 @@ void irc::handle(QString str)
 				
 				msg.remove(QRegExp("[\\n\\t\\r]"));
 				msg.replace("!send ", "");
-				qDebug() << "message for me";
 				if (msg.contains(";"))
 				{
 					QStringList tmp = msg.split(";");
@@ -103,7 +102,6 @@ void irc::pingcheckfunc()
 {
 	if (pinged)
 	{
-		qDebug() << "reconnection not needed";
 		pinged = false;
 	}
 	else

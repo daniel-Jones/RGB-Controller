@@ -3,6 +3,7 @@
 #include <QSerialPortInfo>
 #include <QSerialPort>
 #include <QTimer>
+#include <QThread>
 
 void show_ports();
 bool serial_connect(QString port);
@@ -71,6 +72,8 @@ bool serial_connect(QString port)
 		serial.setFlowControl(QSerialPort::NoFlowControl);
 		serial.open(QIODevice::ReadWrite);
 		serial.waitForBytesWritten(9000);
+
+	QThread::sleep(1);
 		if (serial.isWritable()) {
 			return true;
 		}
@@ -93,7 +96,7 @@ void send(QString com)
 {
     data = "";
     data.append(com + "\n");
-    //qDebug() << "sending:" << data;
+    qDebug() << "sending:" << data;
     if (serial.isOpen())
     {
         serial.write(data);

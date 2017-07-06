@@ -563,7 +563,6 @@ bool controllerWindow::serial_disconnect()
 void controllerWindow::send(QString com)
 {
 	data = "";
-	qDebug() << "sending" << com;
 	data.append(com + "\n");
 	if (ser->isOpen())
 		ser->write(data);
@@ -697,7 +696,6 @@ void controllerWindow::on_server_start_button_clicked()
 
 void controllerWindow::cmdrecv(QString cmd)
 {
-	qDebug() << "got cmd" << cmd;
+	qDebug() << "received command:" << cmd;
 	send(cmd);
-
 }
