@@ -19,6 +19,16 @@ int blue = 0;
 int bf = 0;
 int bt = 255;
 
+struct stat
+{
+	int r;
+	int g;
+	int b;
+	bool r_fade;
+	bool g_fade;
+	bool b_fade;
+} status; 
+
 void tests();
 
 void red_thread();
@@ -30,65 +40,14 @@ bool g_rev = false;
 void blue_thread();
 bool b_rev = false;
 
-void draw_square(struct square *sq);
-
 Thread r_fade = Thread();
 Thread g_fade = Thread();
 Thread b_fade = Thread();
 
-
-struct square {
-	int x1; // top left
-	int x2; // top right
-	int x3; // bottom left
-	int x4; //bottom right
-	int y1; //top left
-	int y2; // top right
-	int y3; // bottom left
-	int y4; // bottom right
-};
-
-
-struct square sq1;
-
-struct square sq2;
-
-
-
 void parse(String com);
-
-void OledWrite(int x, int y, int size, String text) { // this function will write to our oled
-	display.setTextSize(size); // set the font size
-	display.setTextColor(WHITE); // set the font color
-	display.setCursor(x, y); // set the cursor position
-	display.println(text); // add our text to the oled buffer
-	display.display();
-}
 
 void setup()
 {
-	sq1.x1 = 0;
-	sq1.x2 = 30;
-	sq1.x3 = 0;
-	sq1.x4 = 30;
-	sq1.y1 = 0;
-	sq1.y2 = 0; 
-	sq1.y3 = 30;
-	sq1.y4 = 30;
-
-
-	sq2.x1 = 60;
-	sq2.x2 = 90;
-	sq2.x3 = 60;
-	sq2.x4 = 90;
-	sq2.y1 = 0;
-	sq2.y2 = 0; 
-	sq2.y3 = 30;
-	sq2.y4 = 30;
-
-
-	display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // lets begin our oled display/connection
-	display.clearDisplay(); // clear oled display from anything left over from last session
 	Serial.begin(9600);
 	pinMode(redPin, OUTPUT);
 	pinMode(greenPin, OUTPUT);
@@ -234,11 +193,6 @@ void parse(String com)
 		bt = p2.toInt();
 	if (p1.equalsIgnoreCase("ping"))
 		Serial.write("ping=pong\n");
-	if (p1.equalsIgnoreCase("write"))
-	{
-		display.clearDisplay();
-		OledWrite(0, 0, 3, p2);
-	}
 	if (p1.equalsIgnoreCase("off"))
 	{
 		red = 0;
@@ -250,6 +204,37 @@ void parse(String com)
 		analogWrite(redPin, red);
 		analogWrite(greenPin, green);
 		analogWrite(bluePin, blue);
+	}
+	if (p1.equalsIgnoreCase("dark"))
+	{
+		status.r = red;
+		status.g = green;
+		status.b = blue;
+		status.r_fade = r_fade.enabled;
+		status.g_fade = g_fade.enabled;
+		status.b_fade = b_fade.enabled;
+		red = 0;
+		green = 0;
+		blue = 0;
+		r_fade.enabled = false;
+		g_fade.enabled = false;
+		b_fade.enabled = false;
+		analogWrite(redPin, red);
+		analogWrite(greenPin, green);
+		analogWrite(bluePin, blue);
+	}
+	if (p1.equalsIgnoreCase("resume"))
+	{
+		red = status.r;
+		green = status.g;
+		blue = status.b;
+		r_fade.enabled = status.r_fade;
+		g_fade.enabled = status.g_fade;
+		b_fade.enabled = status.b_fade;
+		analogWrite(redPin, red);
+		analogWrite(greenPin, green);
+		analogWrite(bluePin, blue);
+
 	}
 }
 
@@ -278,27 +263,4 @@ void loop()
 			line += c;
 		}
 	}
-	tests();
-}
-
-void tests()
-{
-	display.clearDisplay();
-
-	draw_square(&sq1);
-	draw_square(&sq2);
-
-	display.display();
-}
-
-void draw_square(struct square *sq)
-{
-	/* top left -> top right */
-	display.drawLine(sq->x2, sq->y1, sq->x1, sq->y2, WHITE);
-	/* top right -> bottom right */
-	display.drawLine(sq->x2, sq->y2, sq->x4, sq->y4, WHITE);
-	/* bottom right -> bottom left */
-	display.drawLine(sq->x4, sq->y4, sq->x3, sq->y3, WHITE);
-	/* bottom left -> top left */
-	display.drawLine(sq->x3, sq->y3, sq->x1, sq->y1, WHITE);
 }
