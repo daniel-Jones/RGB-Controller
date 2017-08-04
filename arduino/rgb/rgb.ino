@@ -1,9 +1,5 @@
 #include <SPI.h>
 #include <Thread.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#define OLED_RESET 4
-Adafruit_SSD1306 display(OLED_RESET);
 
 const int redPin = 2;
 const int greenPin = 4;
@@ -64,56 +60,34 @@ void setup()
 	b_fade.enabled = false;
 	b_fade.onRun(blue_thread);
 	b_fade.setInterval(10);
-
 }
 
 void red_thread()
 {
-	if (red < rf)
-		red = rf;
-	if (red > rt)
-		red = rf;
-	if (red == rt)
-		r_rev = true;
-	if (red == rf)
-		r_rev = false;
-	if (!r_rev)
-		red++;analogWrite(redPin, red);
-	if (r_rev)
-		red--;analogWrite(redPin, red);
+	if (red < rf) {red = rf;}
+	if (red > rt) {red = rf;}
+	if (red == rt) {r_rev = true;}
+	if (red == rf) {r_rev = false;}
+	((!r_rev) ? (red++, analogWrite(redPin, red)) : (red--, analogWrite(redPin, red))); 
 }
 
 void green_thread()
 {
-	if (red < rf)
-		green = gf;
-	if (green > gt)
-		green = gf;
-	if (green == gt)
-		g_rev = true;
-	if (green == gf)
-		g_rev = false;
-	if (!g_rev)
-		green++;analogWrite(greenPin, green);
-	if (g_rev)
-		green--;analogWrite(greenPin, green);
+	if (red < rf) {green = gf;}
+	if (green > gt) {green = gf;}
+	if (green == gt) {g_rev = true;}
+	if (green == gf) {g_rev = false;}
+	((!g_rev) ? (green++, analogWrite(greenPin, green)) : (green--, analogWrite(greenPin, green)));
 }
 
 
 void blue_thread()
 {
-	if (blue < bf)
-		red = bf;
-	if (blue > bt)
-		blue = bf;
-	if (blue == bt)
-		b_rev = true;
-	if (blue == bf)
-		b_rev = false;
-	if (!b_rev)
-		blue++;analogWrite(bluePin, blue);
-	if (b_rev)
-		blue--;analogWrite(bluePin, blue);
+	if (blue < bf) red = bf;
+	if (blue > bt) blue = bf;
+	if (blue == bt) b_rev = true;
+	if (blue == bf) b_rev = false;
+	((!b_rev) ? (blue++, analogWrite(bluePin, blue)) : (blue--, analogWrite(bluePin, blue)));
 }
 
 void parse(String com)
@@ -138,40 +112,12 @@ void parse(String com)
 		blue = p2.toInt();
 		analogWrite(bluePin, blue);
 	}
-	if (p1.equalsIgnoreCase("redfade"))
-	{
-		if (r_fade.enabled)
-			r_fade.enabled = false;
-		else if (!r_fade.enabled)
-			r_fade.enabled = true;
-	}
-	if (p1.equalsIgnoreCase("greenfade"))
-	{
-		if (g_fade.enabled)
-			g_fade.enabled = false;
-		else if (!g_fade.enabled)
-			g_fade.enabled = true;
-	}
-	if (p1.equalsIgnoreCase("bluefade"))
-	{
-		if (b_fade.enabled)
-			b_fade.enabled = false;
-		else if (!b_fade.enabled)
-			b_fade.enabled = true;
-	}
-	if (p1.equalsIgnoreCase("rspeed"))
-	{
-		r_fade.setInterval(p2.toInt());
-	}
-	if (p1.equalsIgnoreCase("gspeed"))
-	{
-		g_fade.setInterval(p2.toInt());
-	}
-
-	if (p1.equalsIgnoreCase("bspeed"))
-	{
-		b_fade.setInterval(p2.toInt());
-	}
+	if (p1.equalsIgnoreCase("redfade")) (r_fade.enabled) ? r_fade.enabled = false : r_fade.enabled = true;
+	if (p1.equalsIgnoreCase("greenfade")) (g_fade.enabled) ? g_fade.enabled = false : g_fade.enabled = true;
+	if (p1.equalsIgnoreCase("bluefade")) (b_fade.enabled) ? b_fade.enabled = false : b_fade.enabled = true;
+	if (p1.equalsIgnoreCase("rspeed")) r_fade.setInterval(p2.toInt());
+	if (p1.equalsIgnoreCase("gspeed")) g_fade.setInterval(p2.toInt());
+	if (p1.equalsIgnoreCase("bspeed")) b_fade.setInterval(p2.toInt());
 
 	if (p1.equalsIgnoreCase("speed"))
 	{
@@ -179,20 +125,13 @@ void parse(String com)
 		g_fade.setInterval(p2.toInt());
 		b_fade.setInterval(p2.toInt());
 	}
-	if (p1.equalsIgnoreCase("rf"))
-		rf = p2.toInt();
-	if (p1.equalsIgnoreCase("rt"))
-		rt = p2.toInt();
-	if (p1.equalsIgnoreCase("gf"))
-		gf = p2.toInt();
-	if (p1.equalsIgnoreCase("gt"))
-		gt = p2.toInt();
-	if (p1.equalsIgnoreCase("bf"))
-		bf = p2.toInt();
-	if (p1.equalsIgnoreCase("bt"))
-		bt = p2.toInt();
-	if (p1.equalsIgnoreCase("ping"))
-		Serial.write("ping=pong\n");
+	if (p1.equalsIgnoreCase("rf")) rf = p2.toInt();
+	if (p1.equalsIgnoreCase("rt")) rt = p2.toInt();
+	if (p1.equalsIgnoreCase("gf")) gf = p2.toInt();
+	if (p1.equalsIgnoreCase("gt")) gt = p2.toInt();
+	if (p1.equalsIgnoreCase("bf")) bf = p2.toInt();
+	if (p1.equalsIgnoreCase("bt")) bt = p2.toInt();
+	if (p1.equalsIgnoreCase("ping")) Serial.write("ping=pong\n");
 	if (p1.equalsIgnoreCase("off"))
 	{
 		red = 0;
@@ -242,12 +181,9 @@ String line;
 
 void loop()
 {
-	if (r_fade.shouldRun())
-		r_fade.run();
-	if (g_fade.shouldRun())
-		g_fade.run();
-	if (b_fade.shouldRun())
-		b_fade.run();
+	if (r_fade.shouldRun()) r_fade.run();
+	if (g_fade.shouldRun()) g_fade.run();
+	if (b_fade.shouldRun()) b_fade.run();
 
 	/* read serial data */
 	while (Serial.available())
