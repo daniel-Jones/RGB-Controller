@@ -231,6 +231,9 @@ void controllerWindow::show_msgbox(QString message)
 
 int controllerWindow::show_question_box(QString message, QString omessage)
 {
+	/*
+	 * shows a question box to the user with ok/cancel, returns result
+	 */
 	QMessageBox qbox;
 	qbox.setText(message);
 	qbox.setInformativeText(omessage);
