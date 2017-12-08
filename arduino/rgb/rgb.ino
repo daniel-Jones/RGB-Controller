@@ -1,9 +1,9 @@
 #include <SPI.h>
 #include <Thread.h>
 
-const int redPin = 2;
-const int greenPin = 4;
-const int bluePin = 3;
+const int redPin = 4;
+const int greenPin = 3;
+const int bluePin = 2;
 
 int red = 0;
 int rf = 0;
@@ -24,8 +24,6 @@ struct stat
 	bool g_fade;
 	bool b_fade;
 } status; 
-
-void tests();
 
 void red_thread();
 bool r_rev = false;
@@ -64,19 +62,19 @@ void setup()
 
 void red_thread()
 {
-	if (red < rf) {red = rf;}
-	if (red > rt) {red = rf;}
-	if (red == rt) {r_rev = true;}
-	if (red == rf) {r_rev = false;}
+	if (red < rf) red = rf;
+	if (red > rt) red = rf;
+	if (red == rt) r_rev = true;
+	if (red == rf) r_rev = false;
 	((!r_rev) ? (red++, analogWrite(redPin, red)) : (red--, analogWrite(redPin, red))); 
 }
 
 void green_thread()
 {
-	if (red < rf) {green = gf;}
-	if (green > gt) {green = gf;}
-	if (green == gt) {g_rev = true;}
-	if (green == gf) {g_rev = false;}
+	if (red < rf) green = gf;
+	if (green > gt) green = gf;
+	if (green == gt) g_rev = true;
+	if (green == gf) g_rev = false;
 	((!g_rev) ? (green++, analogWrite(greenPin, green)) : (green--, analogWrite(greenPin, green)));
 }
 
@@ -132,6 +130,37 @@ void parse(String com)
 	if (p1.equalsIgnoreCase("bf")) bf = p2.toInt();
 	if (p1.equalsIgnoreCase("bt")) bt = p2.toInt();
 	if (p1.equalsIgnoreCase("ping")) Serial.write("ping=pong\n");
+
+	/* color increment/decrement */
+	if (p1.equalsIgnoreCase("ru") && red <= 255)
+	{
+		red++;analogWrite(redPin, red);
+	}
+	if (p1.equalsIgnoreCase("gu") && green <= 255)
+	{
+		green++;analogWrite(greenPin, green);
+	}
+	if (p1.equalsIgnoreCase("bu") && blue <= 255)
+	{
+		blue++;analogWrite(bluePin, blue);
+	}
+
+	if (p1.equalsIgnoreCase("rd") && red > 0)
+	{
+		red--;analogWrite(redPin, red);
+	}
+	if (p1.equalsIgnoreCase("gd") && green > 0)
+	{
+		green--;analogWrite(greenPin, green);
+	}
+	if (p1.equalsIgnoreCase("bd") && blue > 0)
+	{
+		blue--;analogWrite(bluePin, blue);
+	}
+
+
+
+
 	if (p1.equalsIgnoreCase("off"))
 	{
 		red = 0;
