@@ -1,61 +1,99 @@
-#include <ncurses.h>
+/*
+ * Copyright Daniel Jones 2016-2018
+ *
+ * This file is part of RGBController.
+ *
+ * RGBController is free software: you can redistribute it and/or modifiy
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RGBController is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RGBController.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <termios.h>
+#include <ncurses.h>
 
-/* server information */
-char host[128];
-char port[128];
+int open_port();
+void write_port(int fd, char *str);
 
-/* stores our menu items */
+int fd;
+
 char *main_menu_items[] = {
-	"setup",
-	"connect",
-	"disconnect",
+	"color",
+	"fade",
 	"presets",
+	"raw",
 	"exit",
 };
-
-char *setup_menu_items[] = {
-	"host",
-	"port",
-	"back",
-};
-
-/* windows */
-WINDOW *menuwindow; /* main menu window */
-WINDOW *setupwindow; /* setup window */
-
-/* store the number of items in the menus */
 int total_main_items = sizeof(main_menu_items) / sizeof(char *);
-int total_setup_items = sizeof(setup_menu_items) / sizeof(char *);
 
-/* menu functions */
-void mainmenu(int index);
-void setupmenu(int index);
+WINDOW *menuwindow;
+WINDOW *fadewindow;
+WINDOW *presetswindow;
 
-/* normal menu print function */
+void main_menu(int index);
+
 void print_menu(WINDOW *win, int index, char *items[], int itemsize);
-
 
 int main(int argc, char *argv[])
 {
-	/* ncurses setup */
 	initscr();
 	clear();
 	noecho();
 	cbreak();
 	curs_set(0);
-	mvprintw(0, 0, "RGB controller");
-	mvprintw(1, 0, "use the arrow keys to navigate the menu, enter to select");
+	mvprintw(0, 0, "RGB Controller");
+	mvprintw(1, 0, "Use the arrow keys to navigate, enter to select");
 	clrtoeol();
 	refresh();
-	/* menus */
-	mainmenu(1);
-	/* end ncurses */
+	fd = open_port();
+	//sleep(2); /* let the arduino wake up */
+	write_port(fd, "off\n");
+	main_menu(1);
+	close(fd);
 	endwin();
+	delwin(menuwindow);
+	delwin(fadewindow);
+	delwin(presetswindow);
 	return 0;
 }
 
-void mainmenu(int index)
+int open_port()
+{
+	int fd;
+	fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_NDELAY);
+	if (fd == -1)
+	{
+		mvprintw(3, 0, "port error: unable to open port\n");
+	}
+	else
+	{
+		fcntl(fd, F_SETFL, 0);
+	}
+	return fd;
+}
+
+void write_port(int fd, char *str)
+{
+	int n;
+	n = write(fd, str, strlen(str));
+	if (n < 0)
+		fputs("writing error:\n", stderr);
+}
+
+void main_menu(int index)
 {
 	menuwindow = newwin(total_main_items + 4, 16, LINES / 2 - total_main_items, (COLS - 16) / 2);
 	int menuindex = index; /* store menu index */
@@ -89,88 +127,35 @@ void mainmenu(int index)
 		if (selected != 0)
 			break;
 	}
-	wclear(menuwindow); /* causes flashes, fix */
-	wrefresh(menuwindow);
-	delwin(menuwindow);
 	if (selected - 1 == 0)
-		setupmenu(1);
-}
-
-void setupmenu(int index)
-{
-	setupwindow = newwin(total_setup_items + 4, 16, LINES / 2 - total_setup_items, (COLS - 16) / 2);
-	int menuindex = index; /* store menu index */
-	int selected = 0; /* stores the menu item selected */
-	int in; /* stores user input */
-	keypad(setupwindow, TRUE);
-	print_menu(setupwindow, menuindex, setup_menu_items, total_setup_items);
-	/* input loop */
-	while (1)
 	{
-		in = wgetch(setupwindow);
-		switch (in)
-		{
-			case KEY_UP:
-				if (menuindex == 1)
-					menuindex = total_setup_items;
-				else
-					menuindex--;
-				break;
-			case KEY_DOWN:
-				if (menuindex == total_setup_items)
-					menuindex = 1;
-				else
-					menuindex++;
-				break;
-			case 10:
-				selected = menuindex;
-				break;
-		}
-		print_menu(setupwindow, menuindex, setup_menu_items, total_setup_items);
-		if (selected != 0)
-			break;
-	}
-	if (selected == 1)
-	{
-		move(3, 0);
-		clrtoeol();
-		mvprintw(3, 0, "Enter a server address: ");
-		echo();
-		getstr(host);
-		noecho();
-		move(3, 0);
-		clrtoeol();
-		mvprintw(3, 0, "host set to: %s", host);
+		mvprintw(3, 0, "option 1");
 		refresh();
-		setupmenu(selected);
+		main_menu(1);
 	}
-	if (selected == 2)
+	if (selected - 1 == 3)
 	{
 		move(3, 0);
 		clrtoeol();
-		mvprintw(3, 0, "Enter a server port: ");
-		echo();
-		getstr(port);
-		noecho();
-		move(3, 0);
-		clrtoeol();
-		mvprintw(3, 0, "port set to: %s", port);
+		mvprintw(3, 0, "Enter string to send: ");
 		refresh();
-		setupmenu(selected);
+		echo();
+		char str[128];
+		getstr(str);
+		write_port(fd, "redfade\n");
+		main_menu(4);
+	}
+	wclear(menuwindow); /* causes flashes, fix by only clearing lines below x */
+	wrefresh(menuwindow);
 	}
 
-	wclear(setupwindow);
-	wrefresh(setupwindow);
-	delwin(setupwindow);
-	if (selected - 1 == 2)
-		mainmenu(1);
-}
 
 void print_menu(WINDOW *win, int index, char *items[], int itemsize)
 {
 	int x = 2;
 	int y = 2;
-	box(win, 0, 0); /* draw our border */
+	wborder(win, '|', '|', '-', '-', '+', '+', '+', '+');	
+
 	for (int i = 0; i < itemsize; i++)
 	{
 		if (index == i + 1)
@@ -185,9 +170,3 @@ void print_menu(WINDOW *win, int index, char *items[], int itemsize)
 		wrefresh(win);
 	}
 }
-
-
-
-
-
-
